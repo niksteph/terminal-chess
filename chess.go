@@ -46,7 +46,16 @@ const (
 )
 const rowUnicodeOffset = 0x0031
 
+type player string
+const (
+	white player = "white"
+	black player = "black"
+)
 type board [8][8]piece
+type position struct {
+	board board
+	turn player
+}
 
 type square struct {
 	file int
@@ -54,14 +63,19 @@ type square struct {
 }
 
 func main() {
-	var board board
-	board.startingPos()
-	err := board.move(square{_e,_2}, square{_e,_4})
+	var position position
+	position.startingPos()
+	err := position.move(square{_e,_2}, square{_e,_4})
 	fmt.Println(err)
-	fmt.Println(board.formatb(true))
+	err = position.move(square{_d,_7}, square{_d,_5})
+	fmt.Println(err)
+	err = position.move(square{_e,_4}, square{_d,_5})
+	fmt.Println(err)
+	fmt.Println(position.board.formatb(true))
 }
 
-func (board *board) startingPos() {
+func (position *position) startingPos() {
+	var board *board = &(position.board)
 	board.clear()
 	board[_a][_1] = wrook
 	board[_b][_1] = wknight
@@ -85,6 +99,8 @@ func (board *board) startingPos() {
 		board[file][_2] = wpawn
 		board[file][_7] = bpawn
 	}
+
+	position.turn = white
 }
 
 func (board *board) clear() {
@@ -119,12 +135,37 @@ func (board *board) formatb(withLabels bool) (s string) {
 	return
 }
 
-func (board *board) move(from, to square) error {
-	if board[from.file][from.row] == empty {
+func (position *position) move(from, to square) error {
+	var board *board = &(position.board)
+	if board[from.file][from.row] ==  empty {
 		var message string = fmt.Sprintf("Square %c%c is empty!", from.file+fileUnicodeOffset, from.row+rowUnicodeOffset)
 		return errors.New(message)
 	}
+	playerOfPiece, err := playerOf(board[from.file][from.row])
+	if err != nil {
+		return err
+	}
+	if position.turn != playerOfPiece {
+		var message string = fmt.Sprintf("Not %v's turn!", playerOfPiece)
+		return errors.New(message)
+	}
+	
 	board[to.file][to.row] = board[from.file][from.row]
 	board[from.file][from.row] = empty
+	if position.turn == white {
+		position.turn = black
+	} else {
+		position.turn = white
+	}
 	return nil
+}
+
+func playerOf(piece piece) (player, error) {
+	if wking <= piece && piece <= wpawn {
+		return white, nil
+	} else if bking <= piece && piece <= bpawn {
+		return black, nil
+	}
+	var message string = fmt.Sprintf("Not an actual piece: %v", piece)
+	return "", errors.New(message)
 }
