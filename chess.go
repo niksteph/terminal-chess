@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"errors"
 )
 
 type piece = rune
@@ -138,16 +137,14 @@ func (board *board) formatb(withLabels bool) (s string) {
 func (position *position) move(from, to square) error {
 	var board *board = &(position.board)
 	if board[from.file][from.row] ==  empty {
-		var message string = fmt.Sprintf("Square %c%c is empty!", from.file+fileUnicodeOffset, from.row+rowUnicodeOffset)
-		return errors.New(message)
+		return fmt.Errorf("Square %c%c is empty!", from.file+fileUnicodeOffset, from.row+rowUnicodeOffset)
 	}
 	playerOfPiece, err := playerOf(board[from.file][from.row])
 	if err != nil {
 		return err
 	}
 	if position.turn != playerOfPiece {
-		var message string = fmt.Sprintf("Not %v's turn!", playerOfPiece)
-		return errors.New(message)
+		return fmt.Errorf("Not %v's turn!", playerOfPiece)
 	}
 	
 	board[to.file][to.row] = board[from.file][from.row]
@@ -166,6 +163,5 @@ func playerOf(piece piece) (player, error) {
 	} else if bking <= piece && piece <= bpawn {
 		return black, nil
 	}
-	var message string = fmt.Sprintf("Not an actual piece: %v", piece)
-	return "", errors.New(message)
+	return "", fmt.Errorf("Not an actual piece: %v", piece)
 }
