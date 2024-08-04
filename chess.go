@@ -5,6 +5,7 @@ import (
 )
 
 type piece = rune
+
 const empty piece = 0x0020
 const (
 	wking piece = 0x2654 + iota
@@ -46,29 +47,31 @@ const (
 const rowUnicodeOffset = 0x0031
 
 type player string
+
 const (
 	white player = "white"
 	black player = "black"
 )
+
 type board [8][8]piece
 type position struct {
 	board board
-	turn player
+	turn  player
 }
 
 type square struct {
 	file int
-	row int
+	row  int
 }
 
 func main() {
 	var position position
 	position.startingPos()
-	err := position.move(square{_e,_2}, square{_e,_4})
+	err := position.move(square{_e, _2}, square{_e, _4})
 	fmt.Println(err)
-	err = position.move(square{_d,_7}, square{_d,_5})
+	err = position.move(square{_d, _7}, square{_d, _5})
 	fmt.Println(err)
-	err = position.move(square{_e,_4}, square{_d,_5})
+	err = position.move(square{_e, _4}, square{_d, _5})
 	fmt.Println(err)
 	fmt.Println(position.board.formatb(true))
 }
@@ -136,14 +139,14 @@ func (board *board) formatb(withLabels bool) (s string) {
 
 func (position *position) move(from, to square) error {
 	var board *board = &(position.board)
-	if board[from.file][from.row] ==  empty {
+	if board[from.file][from.row] == empty {
 		return fmt.Errorf("Square %c%c is empty!", from.file+fileUnicodeOffset, from.row+rowUnicodeOffset)
 	}
 	playerOfPiece := playerOf(board[from.file][from.row])
 	if position.turn != playerOfPiece {
 		return fmt.Errorf("Not %v's turn!", playerOfPiece)
 	}
-	
+
 	board[to.file][to.row] = board[from.file][from.row]
 	board[from.file][from.row] = empty
 	if position.turn == white {
