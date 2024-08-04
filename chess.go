@@ -139,10 +139,7 @@ func (position *position) move(from, to square) error {
 	if board[from.file][from.row] ==  empty {
 		return fmt.Errorf("Square %c%c is empty!", from.file+fileUnicodeOffset, from.row+rowUnicodeOffset)
 	}
-	playerOfPiece, err := playerOf(board[from.file][from.row])
-	if err != nil {
-		return err
-	}
+	playerOfPiece := playerOf(board[from.file][from.row])
 	if position.turn != playerOfPiece {
 		return fmt.Errorf("Not %v's turn!", playerOfPiece)
 	}
@@ -157,11 +154,11 @@ func (position *position) move(from, to square) error {
 	return nil
 }
 
-func playerOf(piece piece) (player, error) {
+func playerOf(piece piece) player {
 	if wking <= piece && piece <= wpawn {
-		return white, nil
+		return white
 	} else if bking <= piece && piece <= bpawn {
-		return black, nil
+		return black
 	}
-	return "", fmt.Errorf("Not an actual piece: %v", piece)
+	panic(fmt.Sprintf("Not an actual piece: %v", piece))
 }
