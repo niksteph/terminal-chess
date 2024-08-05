@@ -166,6 +166,25 @@ func (position *position) move(from, to square) error {
 	return nil
 }
 
+func (board *board) verifyMove(from, to square) bool {
+	moveFile := abs(to.file - from.file)
+	moveRow := abs(to.row - from.row)
+	switch board[from.file][from.row] {
+	case wking, bking:
+		if moveFile > 1 || moveRow > 1 {
+			return false
+		}
+	}
+	return true
+}
+
+func abs(n int) int {
+	if n < 0 {
+		return -n
+	}
+	return n
+}
+
 func playerOf(piece piece) player {
 	if wking <= piece && piece <= wpawn {
 		return white
