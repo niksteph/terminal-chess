@@ -138,6 +138,15 @@ func (board *board) formatb(withLabels bool) (s string) {
 }
 
 func (position *position) move(from, to square) error {
+	if from.file < 0 || from.file > 7 {
+		return fmt.Errorf("File %v out of bounds.", from.file)
+	}
+	if from.row < 0 || from.row > 7 {
+		return fmt.Errorf("Row %v out of bounds.", from.row)
+	}
+	if from == to {
+		return fmt.Errorf("Target square is same as origin square.")
+	}
 	var board *board = &(position.board)
 	if board[from.file][from.row] == empty {
 		return fmt.Errorf("Square %c%c is empty!", from.file+fileUnicodeOffset, from.row+rowUnicodeOffset)
