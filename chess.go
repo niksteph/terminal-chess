@@ -177,6 +177,16 @@ func (board *board) verifyMove(from, to square) bool {
 		if moveFile > 1 || moveRow > 1 {
 			return false
 		}
+	case wrook, brook:
+		return false
+	case wqueen, bqueen:
+		return false
+	case wknight, bknight:
+		return false
+	case wbishop, bbishop:
+		return false
+	case wpawn, bpawn:
+		return false
 	}
 	return true
 }
