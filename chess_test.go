@@ -5,6 +5,19 @@ import (
 	"testing"
 )
 
+func TestVerifyMoveTargetSameColor(t *testing.T) {
+	var board board
+	board.clear()
+	board[_e][_4] = wking
+	board[_e][_5] = wqueen
+	from := square{_e, _4}
+	to := square{_e, _5}
+	legal := board.verifyMove(from, to)
+	if legal {
+		t.Error("Move to a square occupied by a piece of the same color should be illegal but is legal.")
+	}
+}
+
 func TestVerifyMoveKingLegalEmpty(t *testing.T) {
 	var board board
 	board.clear()

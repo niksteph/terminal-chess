@@ -167,6 +167,9 @@ func (position *position) move(from, to square) error {
 }
 
 func (board *board) verifyMove(from, to square) bool {
+	if board[to.file][to.row] != empty && playerOf(board[from.file][from.row]) == playerOf(board[to.file][to.row]) {
+		return false
+	}
 	moveFile := abs(to.file - from.file)
 	moveRow := abs(to.row - from.row)
 	switch board[from.file][from.row] {
