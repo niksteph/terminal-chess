@@ -186,7 +186,9 @@ func (board *board) verifyMove(from, to square) bool {
 			return false
 		}
 	case wqueen, bqueen:
-		return false
+		if moveFile != 0 && moveRow != 0 && moveFile != moveRow {
+			return false
+		}
 	case wknight, bknight:
 		return false
 	case wpawn, bpawn:
