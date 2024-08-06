@@ -18,9 +18,9 @@ func TestVerifyMoveKingLegalEmpty(t *testing.T) {
 			square{_f, _3},
 			square{_d, _4},
 			square{_f, _4},
-			square{_e, _3},
-			square{_e, _4},
+			square{_d, _5},
 			square{_e, _5},
+			square{_f, _5},
 		}
 		for _, to := range tos {
 			legal := board.verifyMove(from, to)

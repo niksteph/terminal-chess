@@ -191,5 +191,5 @@ func playerOf(piece piece) player {
 	} else if bking <= piece && piece <= bpawn {
 		return black
 	}
-	panic(fmt.Sprintf("Not an actual piece: %v", piece))
+	panic(fmt.Sprintf("Not an actual piece: %d (0x%x)", piece, piece))
 }
