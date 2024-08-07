@@ -198,7 +198,12 @@ func (board *board) verifyMove(from, to square) bool {
 			panic(fmt.Sprintf("Impossible pawn position: %c%c", from.file+fileUnicodeOffset, from.row+rowUnicodeOffset))
 		}
 		moveRow := to.row - from.row
-		if !(fileDiff == 0 && 1 <= moveRow && ((from.row == _2 && moveRow <= 2) || moveRow == 1)) {
+		if fileDiff > 1 {
+			return false
+		} else if fileDiff == 0 && !(1 <= moveRow && ((from.row == _2 && moveRow <= 2) || moveRow == 1)) {
+			return false
+		} else if fileDiff == 1 &&
+			!(moveRow == 1 && board[to.file][to.row] != empty && playerOf(board[to.file][to.row]) == black) {
 			return false
 		}
 	case bpawn:
@@ -206,7 +211,12 @@ func (board *board) verifyMove(from, to square) bool {
 			panic(fmt.Sprintf("Impossible pawn position: %c%c", from.file+fileUnicodeOffset, from.row+rowUnicodeOffset))
 		}
 		moveRow := from.row - to.row
-		if !(fileDiff == 0 && 1 <= moveRow && ((from.row == _7 && moveRow <= 2) || moveRow == 1)) {
+		if fileDiff > 1 {
+			return false
+		} else if fileDiff == 0 && !(1 <= moveRow && ((from.row == _7 && moveRow <= 2) || moveRow == 1)) {
+			return false
+		} else if fileDiff == 1 &&
+			!(moveRow == 1 && board[to.file][to.row] != empty && playerOf(board[to.file][to.row]) == white) {
 			return false
 		}
 	}
