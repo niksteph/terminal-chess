@@ -170,31 +170,45 @@ func (board *board) verifyMove(from, to square) bool {
 	if board[to.file][to.row] != empty && playerOf(board[from.file][from.row]) == playerOf(board[to.file][to.row]) {
 		return false
 	}
-	moveFile := abs(to.file - from.file)
-	moveRow := abs(to.row - from.row)
+	fileDiff := abs(to.file - from.file)
+	rowDiff := abs(to.row - from.row)
 	switch board[from.file][from.row] {
 	case wking, bking:
-		if moveFile > 1 || moveRow > 1 {
+		if fileDiff > 1 || rowDiff > 1 {
 			return false
 		}
 	case wrook, brook:
-		if moveFile != 0 && moveRow != 0 {
+		if fileDiff != 0 && rowDiff != 0 {
 			return false
 		}
 	case wbishop, bbishop:
-		if moveFile != moveRow {
+		if fileDiff != rowDiff {
 			return false
 		}
 	case wqueen, bqueen:
-		if moveFile != 0 && moveRow != 0 && moveFile != moveRow {
+		if fileDiff != 0 && rowDiff != 0 && fileDiff != rowDiff {
 			return false
 		}
 	case wknight, bknight:
-		if !((moveFile == 2 && moveRow == 1) || (moveFile == 1 && moveRow == 2)) {
+		if !((fileDiff == 2 && rowDiff == 1) || (fileDiff == 1 && rowDiff == 2)) {
 			return false
 		}
-	case wpawn, bpawn:
-		return false
+	case wpawn:
+		if from.row == _1 || from.row == _8 {
+			panic(fmt.Sprintf("Impossible pawn position: %c%c", from.file+fileUnicodeOffset, from.row+rowUnicodeOffset))
+		}
+		moveRow := to.row - from.row
+		if !(fileDiff == 0 && 1 <= moveRow && ((from.row == _2 && moveRow <= 2) || moveRow == 1)) {
+			return false
+		}
+	case bpawn:
+		if from.row == _1 || from.row == _8 {
+			panic(fmt.Sprintf("Impossible pawn position: %c%c", from.file+fileUnicodeOffset, from.row+rowUnicodeOffset))
+		}
+		moveRow := from.row - to.row
+		if !(fileDiff == 0 && 1 <= moveRow && ((from.row == _7 && moveRow <= 2) || moveRow == 1)) {
+			return false
+		}
 	}
 	return true
 }

@@ -272,3 +272,123 @@ func TestVerifyMoveKnightIllegal(t *testing.T) {
 			to.row+rowUnicodeOffset)
 	}
 }
+
+func TestVerifyMoveWhitePawnLegalStartingPos(t *testing.T) {
+	var board board
+	board.clear()
+	board[_e][_2] = wpawn
+	from := square{_e, _2}
+	tos := []square{
+		square{_e, _3},
+		square{_e, _4},
+	}
+	for _, to := range tos {
+		legal := board.verifyMove(from, to)
+		if !legal {
+			t.Errorf("Move from %c%c to %c%c should be legal but is illegal.",
+				from.file+fileUnicodeOffset,
+				from.row+rowUnicodeOffset,
+				to.file+fileUnicodeOffset,
+				to.row+rowUnicodeOffset)
+		}
+	}
+}
+
+func TestVerifyMoveWhitePawnLegalStandard(t *testing.T) {
+	var board board
+	board.clear()
+	board[_e][_3] = wpawn
+	from := square{_e, _3}
+	to := square{_e, _4}
+	legal := board.verifyMove(from, to)
+	if !legal {
+		t.Errorf("Move from %c%c to %c%c should be legal but is illegal.",
+			from.file+fileUnicodeOffset,
+			from.row+rowUnicodeOffset,
+			to.file+fileUnicodeOffset,
+			to.row+rowUnicodeOffset)
+	}
+}
+
+func TestVerifyMoveWhitePawnIllegal(t *testing.T) {
+	var board board
+	board.clear()
+	board[_e][_2] = wpawn
+	from := square{_e, _2}
+	tos := []square{
+		square{_e, _1},
+		square{_e, _5},
+		square{_d, _2},
+		square{_d, _3},
+	}
+	for _, to := range tos {
+		legal := board.verifyMove(from, to)
+		if legal {
+			t.Errorf("Move from %c%c to %c%c should be illegal but is legal.",
+				from.file+fileUnicodeOffset,
+				from.row+rowUnicodeOffset,
+				to.file+fileUnicodeOffset,
+				to.row+rowUnicodeOffset)
+		}
+	}
+}
+
+func TestVerifyMoveBlackPawnLegalStartingPos(t *testing.T) {
+	var board board
+	board.clear()
+	board[_e][_7] = bpawn
+	from := square{_e, _7}
+	tos := []square{
+		square{_e, _6},
+		square{_e, _5},
+	}
+	for _, to := range tos {
+		legal := board.verifyMove(from, to)
+		if !legal {
+			t.Errorf("Move from %c%c to %c%c should be legal but is illegal.",
+				from.file+fileUnicodeOffset,
+				from.row+rowUnicodeOffset,
+				to.file+fileUnicodeOffset,
+				to.row+rowUnicodeOffset)
+		}
+	}
+}
+
+func TestVerifyMoveBlackPawnLegalStandard(t *testing.T) {
+	var board board
+	board.clear()
+	board[_e][_6] = bpawn
+	from := square{_e, _6}
+	to := square{_e, _5}
+	legal := board.verifyMove(from, to)
+	if !legal {
+		t.Errorf("Move from %c%c to %c%c should be legal but is illegal.",
+			from.file+fileUnicodeOffset,
+			from.row+rowUnicodeOffset,
+			to.file+fileUnicodeOffset,
+			to.row+rowUnicodeOffset)
+	}
+}
+
+func TestVerifyMoveBlackPawnIllegal(t *testing.T) {
+	var board board
+	board.clear()
+	board[_e][_7] = bpawn
+	from := square{_e, _7}
+	tos := []square{
+		square{_e, _8},
+		square{_e, _4},
+		square{_d, _7},
+		square{_d, _6},
+	}
+	for _, to := range tos {
+		legal := board.verifyMove(from, to)
+		if legal {
+			t.Errorf("Move from %c%c to %c%c should be illegal but is legal.",
+				from.file+fileUnicodeOffset,
+				from.row+rowUnicodeOffset,
+				to.file+fileUnicodeOffset,
+				to.row+rowUnicodeOffset)
+		}
+	}
+}
