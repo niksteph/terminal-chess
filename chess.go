@@ -172,7 +172,7 @@ func (board *board) verifyMove(from, to square) bool {
 	}
 	fileDiff := abs(to.file - from.file)
 	rowDiff := abs(to.row - from.row)
-	switch board[from.file][from.row] {
+	switch piece := board[from.file][from.row]; piece {
 	case wking, bking:
 		if fileDiff > 1 || rowDiff > 1 {
 			return false
@@ -193,30 +193,29 @@ func (board *board) verifyMove(from, to square) bool {
 		if !((fileDiff == 2 && rowDiff == 1) || (fileDiff == 1 && rowDiff == 2)) {
 			return false
 		}
-	case wpawn:
+	case wpawn, bpawn:
 		if from.row == _1 || from.row == _8 {
 			panic(fmt.Sprintf("Impossible pawn position: %c%c", from.file+fileUnicodeOffset, from.row+rowUnicodeOffset))
 		}
-		moveRow := to.row - from.row
+		var moveRow, startRow int
+		var opponent player
+		if piece == wpawn {
+			moveRow = to.row - from.row
+			startRow = _2
+			opponent = black
+		} else if piece == bpawn {
+			moveRow = from.row - to.row
+			startRow = _7
+			opponent = white
+		} else {
+			panic(fmt.Sprintf("Not a pawn: %d (0x%x)", piece, piece))
+		}
 		if fileDiff > 1 {
 			return false
-		} else if fileDiff == 0 && !(1 <= moveRow && ((from.row == _2 && moveRow <= 2) || moveRow == 1)) {
+		} else if fileDiff == 0 && !(1 <= moveRow && ((from.row == startRow && moveRow <= 2) || moveRow == 1)) {
 			return false
 		} else if fileDiff == 1 &&
-			!(moveRow == 1 && board[to.file][to.row] != empty && playerOf(board[to.file][to.row]) == black) {
-			return false
-		}
-	case bpawn:
-		if from.row == _1 || from.row == _8 {
-			panic(fmt.Sprintf("Impossible pawn position: %c%c", from.file+fileUnicodeOffset, from.row+rowUnicodeOffset))
-		}
-		moveRow := from.row - to.row
-		if fileDiff > 1 {
-			return false
-		} else if fileDiff == 0 && !(1 <= moveRow && ((from.row == _7 && moveRow <= 2) || moveRow == 1)) {
-			return false
-		} else if fileDiff == 1 &&
-			!(moveRow == 1 && board[to.file][to.row] != empty && playerOf(board[to.file][to.row]) == white) {
+			!(moveRow == 1 && board[to.file][to.row] != empty && playerOf(board[to.file][to.row]) == opponent) {
 			return false
 		}
 	}
