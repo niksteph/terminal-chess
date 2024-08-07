@@ -229,3 +229,46 @@ func TestVerifyMoveQueenIllegal(t *testing.T) {
 			to.row+rowUnicodeOffset)
 	}
 }
+
+func TestVerifyMoveKnightLegalEmpty(t *testing.T) {
+	var board board
+	board.clear()
+	board[_e][_4] = wknight
+	from := square{_e, _4}
+	tos := []square{
+		square{_c, _3},
+		square{_c, _5},
+		square{_d, _2},
+		square{_d, _6},
+		square{_f, _2},
+		square{_f, _6},
+		square{_g, _3},
+		square{_g, _5},
+	}
+	for _, to := range tos {
+		legal := board.verifyMove(from, to)
+		if !legal {
+			t.Errorf("Move from %c%c to %c%c should be legal but is illegal.",
+				from.file+fileUnicodeOffset,
+				from.row+rowUnicodeOffset,
+				to.file+fileUnicodeOffset,
+				to.row+rowUnicodeOffset)
+		}
+	}
+}
+
+func TestVerifyMoveKnightIllegal(t *testing.T) {
+	var board board
+	board.clear()
+	board[_e][_4] = wknight
+	from := square{_e, _4}
+	to := square{_e, _5}
+	legal := board.verifyMove(from, to)
+	if legal {
+		t.Errorf("Move from %c%c to %c%c should be illegal but is legal.",
+			from.file+fileUnicodeOffset,
+			from.row+rowUnicodeOffset,
+			to.file+fileUnicodeOffset,
+			to.row+rowUnicodeOffset)
+	}
+}

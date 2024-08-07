@@ -190,7 +190,9 @@ func (board *board) verifyMove(from, to square) bool {
 			return false
 		}
 	case wknight, bknight:
-		return false
+		if !((moveFile == 2 && moveRow == 1) || (moveFile == 1 && moveRow == 2)) {
+			return false
+		}
 	case wpawn, bpawn:
 		return false
 	}
