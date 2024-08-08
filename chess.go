@@ -166,7 +166,7 @@ func (position *position) move(from, to square) error {
 	return nil
 }
 
-func (board *board) verifyMove(from, to square) bool {
+func (board *board) validateMove(from, to square) bool {
 	if board[to.file][to.row] != empty && playerOf(board[from.file][from.row]) == playerOf(board[to.file][to.row]) {
 		return false
 	}

@@ -4,20 +4,20 @@ import (
 	"testing"
 )
 
-func TestVerifyMoveTargetSameColor(t *testing.T) {
+func TestValidateMoveTargetSameColor(t *testing.T) {
 	var board board
 	board.clear()
 	board[_e][_4] = wking
 	board[_e][_5] = wqueen
 	from := square{_e, _4}
 	to := square{_e, _5}
-	legal := board.verifyMove(from, to)
+	legal := board.validateMove(from, to)
 	if legal {
 		t.Error("Move to a square occupied by a piece of the same color should be illegal but is legal.")
 	}
 }
 
-func TestVerifyMoveKingLegalEmpty(t *testing.T) {
+func TestValidateMoveKingLegalEmpty(t *testing.T) {
 	var board board
 	board.clear()
 	pieces := []piece{wking, bking}
@@ -35,7 +35,7 @@ func TestVerifyMoveKingLegalEmpty(t *testing.T) {
 			square{_f, _5},
 		}
 		for _, to := range tos {
-			legal := board.verifyMove(from, to)
+			legal := board.validateMove(from, to)
 			if !legal {
 				t.Errorf("Move from %c%c to %c%c should be legal but is illegal.",
 					from.file+fileUnicodeOffset,
@@ -47,7 +47,7 @@ func TestVerifyMoveKingLegalEmpty(t *testing.T) {
 	}
 }
 
-func TestVerifyMoveKingIllegalDistance(t *testing.T) {
+func TestValidateMoveKingIllegalDistance(t *testing.T) {
 	var board board
 	board.clear()
 	board[_e][_4] = wking
@@ -60,7 +60,7 @@ func TestVerifyMoveKingIllegalDistance(t *testing.T) {
 		square{_g, _6},
 	}
 	for _, to := range tos {
-		legal := board.verifyMove(from, to)
+		legal := board.validateMove(from, to)
 		if legal {
 			t.Errorf("Move from %c%c to %c%c should be illegal but is legal.",
 				from.file+fileUnicodeOffset,
@@ -71,7 +71,7 @@ func TestVerifyMoveKingIllegalDistance(t *testing.T) {
 	}
 }
 
-func TestVerifyMoveRookLegalEmpty(t *testing.T) {
+func TestValidateMoveRookLegalEmpty(t *testing.T) {
 	var board board
 	board.clear()
 	board[_e][_4] = wrook
@@ -93,7 +93,7 @@ func TestVerifyMoveRookLegalEmpty(t *testing.T) {
 		square{_e, _8},
 	}
 	for _, to := range tos {
-		legal := board.verifyMove(from, to)
+		legal := board.validateMove(from, to)
 		if !legal {
 			t.Errorf("Move from %c%c to %c%c should be legal but is illegal.",
 				from.file+fileUnicodeOffset,
@@ -104,13 +104,13 @@ func TestVerifyMoveRookLegalEmpty(t *testing.T) {
 	}
 }
 
-func TestVerifyMoveRookIllegalDiagonal(t *testing.T) {
+func TestValidateMoveRookIllegalDiagonal(t *testing.T) {
 	var board board
 	board.clear()
 	board[_e][_4] = wrook
 	from := square{_e, _4}
 	to := square{_f, _5}
-	legal := board.verifyMove(from, to)
+	legal := board.validateMove(from, to)
 	if legal {
 		t.Errorf("Move from %c%c to %c%c should be illegal but is legal.",
 			from.file+fileUnicodeOffset,
@@ -120,7 +120,7 @@ func TestVerifyMoveRookIllegalDiagonal(t *testing.T) {
 	}
 }
 
-func TestVerifyMoveBishopLegalEmpty(t *testing.T) {
+func TestValidateMoveBishopLegalEmpty(t *testing.T) {
 	var board board
 	board.clear()
 	board[_e][_4] = wbishop
@@ -141,7 +141,7 @@ func TestVerifyMoveBishopLegalEmpty(t *testing.T) {
 		square{_h, _1},
 	}
 	for _, to := range tos {
-		legal := board.verifyMove(from, to)
+		legal := board.validateMove(from, to)
 		if !legal {
 			t.Errorf("Move from %c%c to %c%c should be legal but is illegal.",
 				from.file+fileUnicodeOffset,
@@ -152,13 +152,13 @@ func TestVerifyMoveBishopLegalEmpty(t *testing.T) {
 	}
 }
 
-func TestVerifyMoveBishopIllegalOrthogonal(t *testing.T) {
+func TestValidateMoveBishopIllegalOrthogonal(t *testing.T) {
 	var board board
 	board.clear()
 	board[_e][_4] = wbishop
 	from := square{_e, _4}
 	to := square{_e, _3}
-	legal := board.verifyMove(from, to)
+	legal := board.validateMove(from, to)
 	if legal {
 		t.Errorf("Move from %c%c to %c%c should be illegal but is legal.",
 			from.file+fileUnicodeOffset,
@@ -168,7 +168,7 @@ func TestVerifyMoveBishopIllegalOrthogonal(t *testing.T) {
 	}
 }
 
-func TestVerifyMoveQueenLegalEmpty(t *testing.T) {
+func TestValidateMoveQueenLegalEmpty(t *testing.T) {
 	var board board
 	board.clear()
 	board[_e][_4] = wqueen
@@ -203,7 +203,7 @@ func TestVerifyMoveQueenLegalEmpty(t *testing.T) {
 		square{_h, _1},
 	}
 	for _, to := range tos {
-		legal := board.verifyMove(from, to)
+		legal := board.validateMove(from, to)
 		if !legal {
 			t.Errorf("Move from %c%c to %c%c should be legal but is illegal.",
 				from.file+fileUnicodeOffset,
@@ -214,13 +214,13 @@ func TestVerifyMoveQueenLegalEmpty(t *testing.T) {
 	}
 }
 
-func TestVerifyMoveQueenIllegal(t *testing.T) {
+func TestValidateMoveQueenIllegal(t *testing.T) {
 	var board board
 	board.clear()
 	board[_e][_4] = wqueen
 	from := square{_e, _4}
 	to := square{_f, _2}
-	legal := board.verifyMove(from, to)
+	legal := board.validateMove(from, to)
 	if legal {
 		t.Errorf("Move from %c%c to %c%c should be illegal but is legal.",
 			from.file+fileUnicodeOffset,
@@ -230,7 +230,7 @@ func TestVerifyMoveQueenIllegal(t *testing.T) {
 	}
 }
 
-func TestVerifyMoveKnightLegalEmpty(t *testing.T) {
+func TestValidateMoveKnightLegalEmpty(t *testing.T) {
 	var board board
 	board.clear()
 	board[_e][_4] = wknight
@@ -246,7 +246,7 @@ func TestVerifyMoveKnightLegalEmpty(t *testing.T) {
 		square{_g, _5},
 	}
 	for _, to := range tos {
-		legal := board.verifyMove(from, to)
+		legal := board.validateMove(from, to)
 		if !legal {
 			t.Errorf("Move from %c%c to %c%c should be legal but is illegal.",
 				from.file+fileUnicodeOffset,
@@ -257,13 +257,13 @@ func TestVerifyMoveKnightLegalEmpty(t *testing.T) {
 	}
 }
 
-func TestVerifyMoveKnightIllegal(t *testing.T) {
+func TestValidateMoveKnightIllegal(t *testing.T) {
 	var board board
 	board.clear()
 	board[_e][_4] = wknight
 	from := square{_e, _4}
 	to := square{_e, _5}
-	legal := board.verifyMove(from, to)
+	legal := board.validateMove(from, to)
 	if legal {
 		t.Errorf("Move from %c%c to %c%c should be illegal but is legal.",
 			from.file+fileUnicodeOffset,
@@ -273,7 +273,7 @@ func TestVerifyMoveKnightIllegal(t *testing.T) {
 	}
 }
 
-func TestVerifyMoveWhitePawnLegalStartingPos(t *testing.T) {
+func TestValidateMoveWhitePawnLegalStartingPos(t *testing.T) {
 	var board board
 	board.clear()
 	board[_e][_2] = wpawn
@@ -283,7 +283,7 @@ func TestVerifyMoveWhitePawnLegalStartingPos(t *testing.T) {
 		square{_e, _4},
 	}
 	for _, to := range tos {
-		legal := board.verifyMove(from, to)
+		legal := board.validateMove(from, to)
 		if !legal {
 			t.Errorf("Move from %c%c to %c%c should be legal but is illegal.",
 				from.file+fileUnicodeOffset,
@@ -294,13 +294,13 @@ func TestVerifyMoveWhitePawnLegalStartingPos(t *testing.T) {
 	}
 }
 
-func TestVerifyMoveWhitePawnLegalStandard(t *testing.T) {
+func TestValidateMoveWhitePawnLegalStandard(t *testing.T) {
 	var board board
 	board.clear()
 	board[_e][_3] = wpawn
 	from := square{_e, _3}
 	to := square{_e, _4}
-	legal := board.verifyMove(from, to)
+	legal := board.validateMove(from, to)
 	if !legal {
 		t.Errorf("Move from %c%c to %c%c should be legal but is illegal.",
 			from.file+fileUnicodeOffset,
@@ -310,7 +310,7 @@ func TestVerifyMoveWhitePawnLegalStandard(t *testing.T) {
 	}
 }
 
-func TestVerifyMoveWhitePawnLegalTaking(t *testing.T) {
+func TestValidateMoveWhitePawnLegalTaking(t *testing.T) {
 	var board board
 	board.clear()
 	board[_e][_4] = wpawn
@@ -322,7 +322,7 @@ func TestVerifyMoveWhitePawnLegalTaking(t *testing.T) {
 		square{_f, _5},
 	}
 	for _, to := range tos {
-		legal := board.verifyMove(from, to)
+		legal := board.validateMove(from, to)
 		if !legal {
 			t.Errorf("Move from %c%c to %c%c should be legal but is illegal.",
 				from.file+fileUnicodeOffset,
@@ -333,7 +333,7 @@ func TestVerifyMoveWhitePawnLegalTaking(t *testing.T) {
 	}
 }
 
-func TestVerifyMoveWhitePawnIllegal(t *testing.T) {
+func TestValidateMoveWhitePawnIllegal(t *testing.T) {
 	var board board
 	board.clear()
 	board[_e][_2] = wpawn
@@ -345,7 +345,7 @@ func TestVerifyMoveWhitePawnIllegal(t *testing.T) {
 		square{_d, _3},
 	}
 	for _, to := range tos {
-		legal := board.verifyMove(from, to)
+		legal := board.validateMove(from, to)
 		if legal {
 			t.Errorf("Move from %c%c to %c%c should be illegal but is legal.",
 				from.file+fileUnicodeOffset,
@@ -356,7 +356,7 @@ func TestVerifyMoveWhitePawnIllegal(t *testing.T) {
 	}
 }
 
-func TestVerifyMoveBlackPawnLegalStartingPos(t *testing.T) {
+func TestValidateMoveBlackPawnLegalStartingPos(t *testing.T) {
 	var board board
 	board.clear()
 	board[_e][_7] = bpawn
@@ -366,7 +366,7 @@ func TestVerifyMoveBlackPawnLegalStartingPos(t *testing.T) {
 		square{_e, _5},
 	}
 	for _, to := range tos {
-		legal := board.verifyMove(from, to)
+		legal := board.validateMove(from, to)
 		if !legal {
 			t.Errorf("Move from %c%c to %c%c should be legal but is illegal.",
 				from.file+fileUnicodeOffset,
@@ -377,13 +377,13 @@ func TestVerifyMoveBlackPawnLegalStartingPos(t *testing.T) {
 	}
 }
 
-func TestVerifyMoveBlackPawnLegalStandard(t *testing.T) {
+func TestValidateMoveBlackPawnLegalStandard(t *testing.T) {
 	var board board
 	board.clear()
 	board[_e][_6] = bpawn
 	from := square{_e, _6}
 	to := square{_e, _5}
-	legal := board.verifyMove(from, to)
+	legal := board.validateMove(from, to)
 	if !legal {
 		t.Errorf("Move from %c%c to %c%c should be legal but is illegal.",
 			from.file+fileUnicodeOffset,
@@ -393,7 +393,7 @@ func TestVerifyMoveBlackPawnLegalStandard(t *testing.T) {
 	}
 }
 
-func TestVerifyMoveBlackPawnLegalTaking(t *testing.T) {
+func TestValidateMoveBlackPawnLegalTaking(t *testing.T) {
 	var board board
 	board.clear()
 	board[_e][_5] = bpawn
@@ -405,7 +405,7 @@ func TestVerifyMoveBlackPawnLegalTaking(t *testing.T) {
 		square{_f, _4},
 	}
 	for _, to := range tos {
-		legal := board.verifyMove(from, to)
+		legal := board.validateMove(from, to)
 		if !legal {
 			t.Errorf("Move from %c%c to %c%c should be legal but is illegal.",
 				from.file+fileUnicodeOffset,
@@ -416,7 +416,7 @@ func TestVerifyMoveBlackPawnLegalTaking(t *testing.T) {
 	}
 }
 
-func TestVerifyMoveBlackPawnIllegal(t *testing.T) {
+func TestValidateMoveBlackPawnIllegal(t *testing.T) {
 	var board board
 	board.clear()
 	board[_e][_7] = bpawn
@@ -428,7 +428,7 @@ func TestVerifyMoveBlackPawnIllegal(t *testing.T) {
 		square{_d, _6},
 	}
 	for _, to := range tos {
-		legal := board.verifyMove(from, to)
+		legal := board.validateMove(from, to)
 		if legal {
 			t.Errorf("Move from %c%c to %c%c should be illegal but is legal.",
 				from.file+fileUnicodeOffset,
