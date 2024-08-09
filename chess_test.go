@@ -120,6 +120,33 @@ func TestValidateMoveRookIllegalDiagonal(t *testing.T) {
 	}
 }
 
+func TestValidateMoveRookIllegalObstructed(t *testing.T) {
+	var board board
+	board.clear()
+	board[_e][_4] = wrook
+	board[_e][_7] = wknight
+	board[_e][_2] = wknight
+	board[_b][_4] = bbishop
+	board[_g][_4] = brook
+	from := square{_e, _4}
+	tos := []square{
+		square{_e, _8},
+		square{_e, _1},
+		square{_a, _4},
+		square{_h, _4},
+	}
+	for _, to := range tos {
+		legal := board.validateMove(from, to)
+		if legal {
+			t.Errorf("Move from %c%c to %c%c should be illegal but is legal.",
+				from.file+fileUnicodeOffset,
+				from.row+rowUnicodeOffset,
+				to.file+fileUnicodeOffset,
+				to.row+rowUnicodeOffset)
+		}
+	}
+}
+
 func TestValidateMoveBishopLegalEmpty(t *testing.T) {
 	var board board
 	board.clear()
