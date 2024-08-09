@@ -197,6 +197,18 @@ func (board *board) validateMove(from, to square) bool {
 		if fileDiff != rowDiff {
 			return false
 		}
+		moveFile := to.file - from.file
+		moveRow := to.row - from.row
+		chebyDist := max(fileDiff, rowDiff)
+		moveFile /= chebyDist
+		moveRow /= chebyDist
+		currFile, currRow := from.file+moveFile, from.row+moveRow
+		for currFile != to.file || currRow != to.row {
+			if board[currFile][currRow] != empty {
+				return false
+			}
+			currFile, currRow = currFile+moveFile, currRow+moveRow
+		}
 	case wqueen, bqueen:
 		if fileDiff != 0 && rowDiff != 0 && fileDiff != rowDiff {
 			return false

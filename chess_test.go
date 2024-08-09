@@ -195,6 +195,33 @@ func TestValidateMoveBishopIllegalOrthogonal(t *testing.T) {
 	}
 }
 
+func TestValidateMoveBishopIllegalObstructed(t *testing.T) {
+	var board board
+	board.clear()
+	board[_e][_4] = wbishop
+	board[_b][_7] = wknight
+	board[_c][_2] = wknight
+	board[_g][_6] = bbishop
+	board[_g][_2] = brook
+	from := square{_e, _4}
+	tos := []square{
+		square{_a, _8},
+		square{_b, _1},
+		square{_h, _7},
+		square{_h, _1},
+	}
+	for _, to := range tos {
+		legal := board.validateMove(from, to)
+		if legal {
+			t.Errorf("Move from %c%c to %c%c should be illegal but is legal.",
+				from.file+fileUnicodeOffset,
+				from.row+rowUnicodeOffset,
+				to.file+fileUnicodeOffset,
+				to.row+rowUnicodeOffset)
+		}
+	}
+}
+
 func TestValidateMoveQueenLegalEmpty(t *testing.T) {
 	var board board
 	board.clear()
