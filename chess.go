@@ -75,7 +75,7 @@ func main() {
 	fmt.Println(err)
 	err = position.move(square{_e, _4}, square{_d, _5})
 	fmt.Println(err)
-	fmt.Println(position.board.formatb(true))
+	fmt.Println(position.board.formatb())
 }
 
 func (position *position) startingPos() {
@@ -115,14 +115,12 @@ func (board *board) clear() {
 	}
 }
 
-func (board *board) formatb(withLabels bool) (s string) {
+func (board *board) formatb() (s string) {
 	for row := _8; row >= _1; row-- {
 		if row < _8 {
 			s += "\n"
 		}
-		if withLabels {
-			s += fmt.Sprintf("%d ", row+1)
-		}
+		s += fmt.Sprintf("%d ", row+1)
 		s += "\033[38;5;0m"
 		for file := _a; file <= _h; file++ {
 			if (row+file)%2 == 0 {
@@ -133,9 +131,7 @@ func (board *board) formatb(withLabels bool) (s string) {
 		}
 		s += "\033[0m"
 	}
-	if withLabels {
-		s += "\n  a b c d e f g h"
-	}
+	s += "\n  a b c d e f g h"
 	return
 }
 
