@@ -153,6 +153,13 @@ func (position *position) move(from, to square) error {
 	if position.turn != playerOfPiece {
 		return fmt.Errorf("Not %v's turn!", playerOfPiece)
 	}
+	if !board.validateMove(from, to) {
+		return fmt.Errorf("Invalid move from %c%c to %c%c!",
+			from.file+fileUnicodeOffset,
+			from.row+rowUnicodeOffset,
+			to.file+fileUnicodeOffset,
+			to.row+rowUnicodeOffset)
+	}
 
 	board[to.file][to.row] = board[from.file][from.row]
 	board[from.file][from.row] = empty
