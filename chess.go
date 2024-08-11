@@ -1,7 +1,9 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
+	"os"
 	"regexp"
 	"strings"
 )
@@ -69,13 +71,22 @@ type square struct {
 func main() {
 	var position position
 	position.startingPos()
-	err := position.move(square{_e, _2}, square{_e, _4})
-	fmt.Println(err)
-	err = position.move(square{_d, _7}, square{_d, _5})
-	fmt.Println(err)
-	err = position.move(square{_e, _4}, square{_d, _5})
-	fmt.Println(err)
+	scanner := bufio.NewScanner(os.Stdin)
 	fmt.Println(position.board.formatb())
+	for scanner.Scan() {
+		move := scanner.Text()
+		from, to, err := parseMove(move)
+		if err != nil {
+			fmt.Println(err)
+			continue
+		}
+		err = position.move(from, to)
+		if err != nil {
+			fmt.Println(err)
+			continue
+		}
+		fmt.Println(position.board.formatb())
+	}
 }
 
 func (position *position) startingPos() {
