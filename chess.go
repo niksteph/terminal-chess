@@ -50,11 +50,11 @@ const (
 )
 const rowUnicodeOffset = 0x0031
 
-type player string
+type player bool
 
 const (
-	white player = "white"
-	black player = "black"
+	white player = true
+	black player = false
 )
 
 type board [8][8]piece
@@ -174,11 +174,7 @@ func (position *position) move(from, to square) error {
 
 	board[to.file][to.row] = board[from.file][from.row]
 	board[from.file][from.row] = empty
-	if position.turn == white {
-		position.turn = black
-	} else {
-		position.turn = white
-	}
+	position.turn = !position.turn
 	return nil
 }
 
@@ -305,4 +301,11 @@ func parseMove(s string) (from, to square, err error) {
 	from = square{int(squareRunes[0][0] - fileUnicodeOffset), int(squareRunes[0][1] - rowUnicodeOffset)}
 	to = square{int(squareRunes[1][0] - fileUnicodeOffset), int(squareRunes[1][1] - rowUnicodeOffset)}
 	return from, to, nil
+}
+
+func (p player) String() string {
+	if p == white {
+		return "white"
+	}
+	return "black"
 }
