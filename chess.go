@@ -2,6 +2,8 @@ package main
 
 import (
 	"fmt"
+	"regexp"
+	"strings"
 )
 
 type piece = rune
@@ -272,4 +274,21 @@ func playerOf(piece piece) player {
 		return black
 	}
 	panic(fmt.Sprintf("Not an actual piece: %d (0x%x)", piece, piece))
+}
+
+func parseMove(s string) (from, to square, err error) {
+	regex := regexp.MustCompile(`^[a-h][1-8]-[a-h][1-8]$`)
+	if !regex.MatchString(s) {
+		return square{}, square{}, fmt.Errorf("Move %q does not match format", s)
+	}
+	squareStrings := strings.Split(s, "-")
+	if len(squareStrings) != 2 {
+		panic("Size of parsed squares is not 2.")
+	}
+	squareRunes := make([][]rune, 2)
+	squareRunes[0] = []rune(squareStrings[0])
+	squareRunes[1] = []rune(squareStrings[1])
+	from = square{int(squareRunes[0][0] - fileUnicodeOffset), int(squareRunes[0][1] - rowUnicodeOffset)}
+	to = square{int(squareRunes[1][0] - fileUnicodeOffset), int(squareRunes[1][1] - rowUnicodeOffset)}
+	return from, to, nil
 }

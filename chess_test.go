@@ -527,3 +527,28 @@ func TestValidateMoveBlackPawnIllegal(t *testing.T) {
 		}
 	}
 }
+
+func TestParseMoveOk(t *testing.T) {
+	move := "e2-a5"
+	gotFrom, gotTo, err := parseMove(move)
+	wantFrom, wantTo := square{_e, _2}, square{_a, _5}
+	if gotFrom != wantFrom || gotTo != wantTo || err != nil {
+		t.Errorf("Move %q is not parsed correctly. From: %v, To: %v, Error: %v", move, gotFrom, gotTo, err)
+	}
+}
+
+func TestParseMoveError(t *testing.T) {
+	moves := []string{
+		"e2-i5",
+		"e9-e5",
+		"xyz",
+		"ab-cd",
+		"##e2-e5##",
+	}
+	for _, move := range moves {
+		_, _, err := parseMove(move)
+		if err == nil {
+			t.Errorf("Parsing move %q should error, but does not", move)
+		}
+	}
+}
