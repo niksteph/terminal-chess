@@ -528,6 +528,330 @@ func TestValidateMoveBlackPawnIllegal(t *testing.T) {
 	}
 }
 
+func TestSquareAttackedByPlayerQueenWhite(t *testing.T) {
+	var board board
+	board.clear()
+	sq := square{_e, _4}
+	player := white
+	attackers := []square{
+		square{_a, _4},
+		square{_b, _4},
+		square{_c, _4},
+		square{_d, _4},
+		square{_f, _4},
+		square{_g, _4},
+		square{_h, _4},
+		square{_e, _1},
+		square{_e, _2},
+		square{_e, _3},
+		square{_e, _5},
+		square{_e, _6},
+		square{_e, _7},
+		square{_e, _8},
+		square{_b, _1},
+		square{_c, _2},
+		square{_d, _3},
+		square{_a, _8},
+		square{_b, _7},
+		square{_c, _6},
+		square{_d, _5},
+		square{_f, _5},
+		square{_g, _6},
+		square{_h, _7},
+		square{_f, _3},
+		square{_g, _2},
+		square{_h, _1},
+	}
+	for _, attacker := range attackers {
+		board[attacker.file][attacker.row] = wqueen
+		attacked := board.squareAttackedByPlayer(sq, player)
+		board[attacker.file][attacker.row] = empty
+		if !attacked {
+			t.Errorf("Square %c%c should be attacked by %c%c but is not.",
+				sq.file+fileUnicodeOffset,
+				sq.row+rowUnicodeOffset,
+				attacker.file+fileUnicodeOffset,
+				attacker.row+rowUnicodeOffset)
+		}
+	}
+}
+
+func TestSquareAttackedByPlayerQueenBlack(t *testing.T) {
+	var board board
+	board.clear()
+	sq := square{_e, _4}
+	player := black
+	attackers := []square{
+		square{_a, _4},
+		square{_b, _4},
+		square{_c, _4},
+		square{_d, _4},
+		square{_f, _4},
+		square{_g, _4},
+		square{_h, _4},
+		square{_e, _1},
+		square{_e, _2},
+		square{_e, _3},
+		square{_e, _5},
+		square{_e, _6},
+		square{_e, _7},
+		square{_e, _8},
+		square{_b, _1},
+		square{_c, _2},
+		square{_d, _3},
+		square{_a, _8},
+		square{_b, _7},
+		square{_c, _6},
+		square{_d, _5},
+		square{_f, _5},
+		square{_g, _6},
+		square{_h, _7},
+		square{_f, _3},
+		square{_g, _2},
+		square{_h, _1},
+	}
+	for _, attacker := range attackers {
+		board[attacker.file][attacker.row] = bqueen
+		attacked := board.squareAttackedByPlayer(sq, player)
+		board[attacker.file][attacker.row] = empty
+		if !attacked {
+			t.Errorf("Square %c%c should be attacked by %c%c but is not.",
+				sq.file+fileUnicodeOffset,
+				sq.row+rowUnicodeOffset,
+				attacker.file+fileUnicodeOffset,
+				attacker.row+rowUnicodeOffset)
+		}
+	}
+}
+
+func TestSquareAttackedByPlayerRookWhite(t *testing.T) {
+	var board board
+	board.clear()
+	sq := square{_e, _4}
+	player := white
+	attackers := []square{
+		square{_a, _4},
+		square{_b, _4},
+		square{_c, _4},
+		square{_d, _4},
+		square{_f, _4},
+		square{_g, _4},
+		square{_h, _4},
+		square{_e, _1},
+		square{_e, _2},
+		square{_e, _3},
+		square{_e, _5},
+		square{_e, _6},
+		square{_e, _7},
+		square{_e, _8},
+	}
+	for _, attacker := range attackers {
+		board[attacker.file][attacker.row] = wrook
+		attacked := board.squareAttackedByPlayer(sq, player)
+		board[attacker.file][attacker.row] = empty
+		if !attacked {
+			t.Errorf("Square %c%c should be attacked by %c%c but is not.",
+				sq.file+fileUnicodeOffset,
+				sq.row+rowUnicodeOffset,
+				attacker.file+fileUnicodeOffset,
+				attacker.row+rowUnicodeOffset)
+		}
+	}
+}
+
+func TestSquareAttackedByPlayerRookBlack(t *testing.T) {
+	var board board
+	board.clear()
+	sq := square{_e, _4}
+	player := black
+	attackers := []square{
+		square{_a, _4},
+		square{_b, _4},
+		square{_c, _4},
+		square{_d, _4},
+		square{_f, _4},
+		square{_g, _4},
+		square{_h, _4},
+		square{_e, _1},
+		square{_e, _2},
+		square{_e, _3},
+		square{_e, _5},
+		square{_e, _6},
+		square{_e, _7},
+		square{_e, _8},
+	}
+	for _, attacker := range attackers {
+		board[attacker.file][attacker.row] = brook
+		attacked := board.squareAttackedByPlayer(sq, player)
+		board[attacker.file][attacker.row] = empty
+		if !attacked {
+			t.Errorf("Square %c%c should be attacked by %c%c but is not.",
+				sq.file+fileUnicodeOffset,
+				sq.row+rowUnicodeOffset,
+				attacker.file+fileUnicodeOffset,
+				attacker.row+rowUnicodeOffset)
+		}
+	}
+}
+
+func TestSquareAttackedByPlayerRookFalseDiagonal(t *testing.T) {
+	var board board
+	board.clear()
+	sq := square{_e, _4}
+	player := black
+	attackers := []square{
+		square{_b, _1},
+		square{_c, _2},
+		square{_d, _3},
+		square{_a, _8},
+		square{_b, _7},
+		square{_c, _6},
+		square{_d, _5},
+		square{_f, _5},
+		square{_g, _6},
+		square{_h, _7},
+		square{_f, _3},
+		square{_g, _2},
+		square{_h, _1},
+	}
+	for _, attacker := range attackers {
+		board[attacker.file][attacker.row] = brook
+		attacked := board.squareAttackedByPlayer(sq, player)
+		board[attacker.file][attacker.row] = empty
+		if attacked {
+			t.Errorf("Square %c%c should not be attacked by %c%c but is.",
+				sq.file+fileUnicodeOffset,
+				sq.row+rowUnicodeOffset,
+				attacker.file+fileUnicodeOffset,
+				attacker.row+rowUnicodeOffset)
+		}
+	}
+}
+
+func TestSquareAttackedByPlayerBishopWhite(t *testing.T) {
+	var board board
+	board.clear()
+	sq := square{_e, _4}
+	player := white
+	attackers := []square{
+		square{_b, _1},
+		square{_c, _2},
+		square{_d, _3},
+		square{_a, _8},
+		square{_b, _7},
+		square{_c, _6},
+		square{_d, _5},
+		square{_f, _5},
+		square{_g, _6},
+		square{_h, _7},
+		square{_f, _3},
+		square{_g, _2},
+		square{_h, _1},
+	}
+	for _, attacker := range attackers {
+		board[attacker.file][attacker.row] = wbishop
+		attacked := board.squareAttackedByPlayer(sq, player)
+		board[attacker.file][attacker.row] = empty
+		if !attacked {
+			t.Errorf("Square %c%c should be attacked by %c%c but is not.",
+				sq.file+fileUnicodeOffset,
+				sq.row+rowUnicodeOffset,
+				attacker.file+fileUnicodeOffset,
+				attacker.row+rowUnicodeOffset)
+		}
+	}
+}
+
+func TestSquareAttackedByPlayerBishopBlack(t *testing.T) {
+	var board board
+	board.clear()
+	sq := square{_e, _4}
+	player := black
+	attackers := []square{
+		square{_b, _1},
+		square{_c, _2},
+		square{_d, _3},
+		square{_a, _8},
+		square{_b, _7},
+		square{_c, _6},
+		square{_d, _5},
+		square{_f, _5},
+		square{_g, _6},
+		square{_h, _7},
+		square{_f, _3},
+		square{_g, _2},
+		square{_h, _1},
+	}
+	for _, attacker := range attackers {
+		board[attacker.file][attacker.row] = bbishop
+		attacked := board.squareAttackedByPlayer(sq, player)
+		board[attacker.file][attacker.row] = empty
+		if !attacked {
+			t.Errorf("Square %c%c should be attacked by %c%c but is not.",
+				sq.file+fileUnicodeOffset,
+				sq.row+rowUnicodeOffset,
+				attacker.file+fileUnicodeOffset,
+				attacker.row+rowUnicodeOffset)
+		}
+	}
+}
+
+func TestSquareAttackedByPlayerBishopFalseOrthogonal(t *testing.T) {
+	var board board
+	board.clear()
+	sq := square{_e, _4}
+	player := black
+	attackers := []square{
+		square{_a, _4},
+		square{_b, _4},
+		square{_c, _4},
+		square{_d, _4},
+		square{_f, _4},
+		square{_g, _4},
+		square{_h, _4},
+		square{_e, _1},
+		square{_e, _2},
+		square{_e, _3},
+		square{_e, _5},
+		square{_e, _6},
+		square{_e, _7},
+		square{_e, _8},
+	}
+	for _, attacker := range attackers {
+		board[attacker.file][attacker.row] = bbishop
+		attacked := board.squareAttackedByPlayer(sq, player)
+		board[attacker.file][attacker.row] = empty
+		if attacked {
+			t.Errorf("Square %c%c should not be attacked by %c%c but is.",
+				sq.file+fileUnicodeOffset,
+				sq.row+rowUnicodeOffset,
+				attacker.file+fileUnicodeOffset,
+				attacker.row+rowUnicodeOffset)
+		}
+	}
+}
+
+func TestSquareAttackedByPlayerBlackObstructed(t *testing.T) {
+	var board board
+	board.clear()
+	sq := square{_e, _4}
+	player := black
+	board[_a][_8] = bqueen
+	board[_a][_4] = bqueen
+	board[_e][_8] = brook
+	board[_h][_1] = bbishop
+	board[_d][_4] = bknight
+	board[_d][_5] = wknight
+	board[_e][_5] = wknight
+	board[_f][_3] = bknight
+	attacked := board.squareAttackedByPlayer(sq, player)
+	if attacked {
+		t.Errorf("Square %c%c should not be attacked but is.",
+			sq.file+fileUnicodeOffset,
+			sq.row+rowUnicodeOffset)
+	}
+}
+
 func TestParseMoveOk(t *testing.T) {
 	move := "e2-a5"
 	gotFrom, gotTo, err := parseMove(move)

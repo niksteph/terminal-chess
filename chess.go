@@ -270,6 +270,50 @@ func (board *board) validateMove(from, to square) bool {
 	return true
 }
 
+func (board *board) squareAttackedByPlayer(sq square, attacker player) bool {
+	orthogonals := []square{
+		square{0, 1},
+		square{1, 0},
+		square{0, -1},
+		square{-1, 0},
+	}
+	diagonals := []square{
+		square{1, 1},
+		square{1, -1},
+		square{-1, -1},
+		square{-1, 1},
+	}
+	for _, d := range orthogonals {
+		for i := 1; i <= 7; i++ {
+			file, row := sq.file+d.file*i, sq.row+d.row*i
+			if _a <= file && file <= _h && _1 <= row && row <= _8 {
+				piece := board[file][row]
+				if ((piece == wqueen || piece == wrook) && attacker == white) ||
+					((piece == bqueen || piece == brook) && attacker == black) {
+					return true
+				} else if piece != empty {
+					break
+				}
+			}
+		}
+	}
+	for _, d := range diagonals {
+		for i := 1; i <= 7; i++ {
+			file, row := sq.file+d.file*i, sq.row+d.row*i
+			if _a <= file && file <= _h && _1 <= row && row <= _8 {
+				piece := board[file][row]
+				if ((piece == wqueen || piece == wbishop) && attacker == white) ||
+					((piece == bqueen || piece == bbishop) && attacker == black) {
+					return true
+				} else if piece != empty {
+					break
+				}
+			}
+		}
+	}
+	return false
+}
+
 func abs(n int) int {
 	if n < 0 {
 		return -n
