@@ -311,6 +311,21 @@ func (board *board) squareAttackedByPlayer(sq square, attacker player) bool {
 			}
 		}
 	}
+	var row int
+	if attacker == white {
+		row = sq.row - 1
+	} else {
+		row = sq.row + 1
+	}
+	for i := -1; i <= 1; i += 2 {
+		file := sq.file + i
+		if _a <= file && file <= _h && _1 <= row && row <= _8 {
+			piece := board[file][row]
+			if (piece == wpawn && attacker == white) || (piece == bpawn && attacker == black) {
+				return true
+			}
+		}
+	}
 	return false
 }
 

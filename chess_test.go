@@ -852,6 +852,77 @@ func TestSquareAttackedByPlayerBlackObstructed(t *testing.T) {
 	}
 }
 
+func TestSquareAttackedByPlayerPawnWhite(t *testing.T) {
+	var board board
+	board.clear()
+	sq := square{_e, _4}
+	player := white
+	attackers := []square{
+		square{_d, _3},
+		square{_f, _3},
+	}
+	for _, attacker := range attackers {
+		board[attacker.file][attacker.row] = wpawn
+		attacked := board.squareAttackedByPlayer(sq, player)
+		board[attacker.file][attacker.row] = empty
+		if !attacked {
+			t.Errorf("Square %c%c should be attacked by %c%c but is not.",
+				sq.file+fileUnicodeOffset,
+				sq.row+rowUnicodeOffset,
+				attacker.file+fileUnicodeOffset,
+				attacker.row+rowUnicodeOffset)
+		}
+	}
+}
+
+func TestSquareAttackedByPlayerPawnBlack(t *testing.T) {
+	var board board
+	board.clear()
+	sq := square{_e, _4}
+	player := black
+	attackers := []square{
+		square{_d, _5},
+		square{_f, _5},
+	}
+	for _, attacker := range attackers {
+		board[attacker.file][attacker.row] = bpawn
+		attacked := board.squareAttackedByPlayer(sq, player)
+		board[attacker.file][attacker.row] = empty
+		if !attacked {
+			t.Errorf("Square %c%c should be attacked by %c%c but is not.",
+				sq.file+fileUnicodeOffset,
+				sq.row+rowUnicodeOffset,
+				attacker.file+fileUnicodeOffset,
+				attacker.row+rowUnicodeOffset)
+		}
+	}
+}
+
+func TestSquareAttackedByPlayerPawnFalse(t *testing.T) {
+	var board board
+	board.clear()
+	sq := square{_e, _4}
+	player := white
+	attackers := []square{
+		square{_e, _3},
+		square{_e, _2},
+		square{_d, _5},
+		square{_f, _5},
+	}
+	for _, attacker := range attackers {
+		board[attacker.file][attacker.row] = wpawn
+		attacked := board.squareAttackedByPlayer(sq, player)
+		board[attacker.file][attacker.row] = empty
+		if attacked {
+			t.Errorf("Square %c%c should not be attacked by %c%c but is.",
+				sq.file+fileUnicodeOffset,
+				sq.row+rowUnicodeOffset,
+				attacker.file+fileUnicodeOffset,
+				attacker.row+rowUnicodeOffset)
+		}
+	}
+}
+
 func TestParseMoveOk(t *testing.T) {
 	move := "e2-a5"
 	gotFrom, gotTo, err := parseMove(move)
