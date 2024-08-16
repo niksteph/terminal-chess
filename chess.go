@@ -362,6 +362,17 @@ func parseMove(s string) (from, to square, err error) {
 	return from, to, nil
 }
 
+func (board *board) findKingOf(player player) (square, error) {
+	for file := range board {
+		for row := range board[file] {
+			if (player == white && board[file][row] == wking) || (player == black && board[file][row] == bking) {
+				return square{file, row}, nil
+			}
+		}
+	}
+	return square{0, 0}, fmt.Errorf("%v's king not found.", player)
+}
+
 func (p player) String() string {
 	if p == white {
 		return "white"

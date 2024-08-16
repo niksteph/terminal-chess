@@ -947,3 +947,24 @@ func TestParseMoveError(t *testing.T) {
 		}
 	}
 }
+
+func TestFindKingOf(t *testing.T) {
+	var board board
+	board.clear()
+	board[_e][_4] = wking
+	board[_e][_6] = bking
+	_, wErr := board.findKingOf(white)
+	_, bErr := board.findKingOf(black)
+	if wErr != nil || bErr != nil {
+		t.Error(wErr, bErr)
+	}
+}
+
+func TestFindKingOfErr(t *testing.T) {
+	var board board
+	board.clear()
+	_, err := board.findKingOf(white)
+	if err == nil {
+		t.Error("Missing king should error but does not")
+	}
+}
