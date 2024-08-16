@@ -342,6 +342,27 @@ func (board *board) squareAttackedByPlayer(sq square, attacker player) bool {
 			}
 		}
 	}
+
+	movFile := 1
+	movRow := 2
+	for i := 0; i < 2; i++ {
+		for j := 0; j < 4; j++ {
+			file := sq.file + movFile
+			row := sq.row + movRow
+			if (_a <= file && file <= _h) && (_1 <= row && row <= _8) {
+				piece := board[file][row]
+				if (piece == wknight && attacker == white) || (piece == bknight && attacker == black) {
+					return true
+				}
+			}
+			tmp := -movFile
+			movFile = movRow
+			movRow = tmp
+		}
+		tmp := movFile
+		movFile = movRow
+		movRow = tmp
+	}
 	return false
 }
 
