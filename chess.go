@@ -174,6 +174,22 @@ func (position *position) move(from, to square) error {
 
 	board[to.file][to.row] = board[from.file][from.row]
 	board[from.file][from.row] = empty
+
+	kingPos, err := board.findKingOf(position.turn)
+	if err != nil {
+		panic(err)
+	}
+	isChecked := board.squareAttackedByPlayer(kingPos, !position.turn)
+	if isChecked {
+		board[from.file][from.row] = board[to.file][to.row]
+		board[to.file][to.row] = empty
+		return fmt.Errorf("Invalid move from %c%c to %c%c, king is left in check!",
+			from.file+fileUnicodeOffset,
+			from.row+rowUnicodeOffset,
+			to.file+fileUnicodeOffset,
+			to.row+rowUnicodeOffset)
+	}
+
 	position.turn = !position.turn
 	return nil
 }
