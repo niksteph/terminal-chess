@@ -1,6 +1,7 @@
 package main
 
 import (
+	"slices"
 	"testing"
 )
 
@@ -981,6 +982,46 @@ func TestSquareAttackedByPlayerKnightBlack(t *testing.T) {
 	}
 }
 
+func TestGenerateValidMovesKing(t *testing.T) {
+	var pos position
+	pos.board.clear()
+	pos.board[_e][_4] = wking
+	pos.turn = white
+	want := []square{
+		{_d, _3},
+		{_d, _4},
+		{_d, _5},
+		{_e, _3},
+		{_e, _5},
+		{_f, _3},
+		{_f, _4},
+		{_f, _5},
+	}
+	got := pos.generateValidMoves()
+	from := square{_e, _4}
+	if !equivalent(want, got[from]) {
+		t.Errorf("Generated moves are wrong. Want %v but got %v.", want, got)
+	}
+}
+
+func TestGenerateValidMovesKingNoMoves(t *testing.T) {
+	var pos position
+	pos.board.clear()
+	pos.board[_e][_4] = wking
+	pos.board[_f][_3] = wpawn
+	pos.board[_e][_6] = bking
+	pos.board[_e][_3] = bbishop
+	pos.board[_d][_1] = brook
+	pos.board[_f][_4] = bpawn
+	pos.turn = white
+	want := []square{}
+	got := pos.generateValidMoves()
+	from := square{_e, _4}
+	if !equivalent(want, got[from]) {
+		t.Errorf("Generated moves are wrong. Want %v but got %v.", want, got)
+	}
+}
+
 func TestParseMoveOk(t *testing.T) {
 	move := "e2-a5"
 	gotFrom, gotTo, err := parseMove(move)
@@ -1025,4 +1066,16 @@ func TestFindKingOfErr(t *testing.T) {
 	if err == nil {
 		t.Error("Missing king should error but does not")
 	}
+}
+
+func equivalent(a, b []square) bool {
+	if len(a) != len(b) {
+		return false
+	}
+	for _, sq := range a {
+		if !slices.Contains(b, sq) {
+			return false
+		}
+	}
+	return true
 }

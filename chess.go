@@ -300,10 +300,18 @@ func (board *board) squareAttackedByPlayer(sq square, attacker player) bool {
 		{-1, 1},
 	}
 	for _, d := range orthogonals {
-		for i := 1; i <= 7; i++ {
-			file, row := sq.file+d.file*i, sq.row+d.row*i
+		file, row := sq.file+d.file, sq.row+d.row
+		piece := board[file][row]
+		if ((piece == wqueen || piece == wrook || piece == wking) && attacker == white) ||
+			((piece == bqueen || piece == brook || piece == bking) && attacker == black) {
+			return true
+		} else if piece != empty {
+			continue
+		}
+		for i := 2; i <= 7; i++ {
+			file, row = sq.file+d.file*i, sq.row+d.row*i
 			if _a <= file && file <= _h && _1 <= row && row <= _8 {
-				piece := board[file][row]
+				piece = board[file][row]
 				if ((piece == wqueen || piece == wrook) && attacker == white) ||
 					((piece == bqueen || piece == brook) && attacker == black) {
 					return true
@@ -314,10 +322,18 @@ func (board *board) squareAttackedByPlayer(sq square, attacker player) bool {
 		}
 	}
 	for _, d := range diagonals {
-		for i := 1; i <= 7; i++ {
-			file, row := sq.file+d.file*i, sq.row+d.row*i
+		file, row := sq.file+d.file, sq.row+d.row
+		piece := board[file][row]
+		if ((piece == wqueen || piece == wbishop || piece == wking) && attacker == white) ||
+			((piece == bqueen || piece == bbishop || piece == bking) && attacker == black) {
+			return true
+		} else if piece != empty {
+			continue
+		}
+		for i := 2; i <= 7; i++ {
+			file, row = sq.file+d.file*i, sq.row+d.row*i
 			if _a <= file && file <= _h && _1 <= row && row <= _8 {
-				piece := board[file][row]
+				piece = board[file][row]
 				if ((piece == wqueen || piece == wbishop) && attacker == white) ||
 					((piece == bqueen || piece == bbishop) && attacker == black) {
 					return true
@@ -364,6 +380,48 @@ func (board *board) squareAttackedByPlayer(sq square, attacker player) bool {
 		movRow = tmp
 	}
 	return false
+}
+
+func (position *position) generateValidMoves() (moves map[square][]square) {
+	moves = make(map[square][]square)
+	player := position.turn
+	board := position.board
+	orthogonals := []square{
+		{0, 1},
+		{1, 0},
+		{0, -1},
+		{-1, 0},
+	}
+	diagonals := []square{
+		{1, 1},
+		{1, -1},
+		{-1, -1},
+		{-1, 1},
+	}
+	for file := range board {
+		for row, piece := range board[file] {
+			if piece != empty && playerOf(piece) == player {
+				switch piece {
+				case wking, bking:
+					from := square{file, row}
+					moves[from] = make([]square, 0)
+					for _, d := range orthogonals {
+						to := square{from.file + d.file, from.row + d.row}
+						if (board[to.file][to.row] == empty || playerOf(board[to.file][to.row]) != player) && !board.squareAttackedByPlayer(to, !player) {
+							moves[from] = append(moves[from], to)
+						}
+					}
+					for _, d := range diagonals {
+						to := square{from.file + d.file, from.row + d.row}
+						if (board[to.file][to.row] == empty || playerOf(board[to.file][to.row]) != player) && !board.squareAttackedByPlayer(to, !player) {
+							moves[from] = append(moves[from], to)
+						}
+					}
+				}
+			}
+		}
+	}
+	return
 }
 
 func abs(n int) int {
@@ -418,5 +476,5 @@ func (p player) String() string {
 }
 
 func (sq square) String() string {
-	return fmt.Sprintf("%c%c", sq.file + fileUnicodeOffset, sq.row + rowUnicodeOffset)
+	return fmt.Sprintf("%c%c", sq.file+fileUnicodeOffset, sq.row+rowUnicodeOffset)
 }
