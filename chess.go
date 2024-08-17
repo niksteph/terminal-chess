@@ -288,16 +288,16 @@ func (board *board) validateMove(from, to square) bool {
 
 func (board *board) squareAttackedByPlayer(sq square, attacker player) bool {
 	orthogonals := []square{
-		square{0, 1},
-		square{1, 0},
-		square{0, -1},
-		square{-1, 0},
+		{0, 1},
+		{1, 0},
+		{0, -1},
+		{-1, 0},
 	}
 	diagonals := []square{
-		square{1, 1},
-		square{1, -1},
-		square{-1, -1},
-		square{-1, 1},
+		{1, 1},
+		{1, -1},
+		{-1, -1},
+		{-1, 1},
 	}
 	for _, d := range orthogonals {
 		for i := 1; i <= 7; i++ {

@@ -25,14 +25,14 @@ func TestValidateMoveKingLegalEmpty(t *testing.T) {
 		board[_e][_4] = piece
 		from := square{_e, _4}
 		tos := []square{
-			square{_d, _3},
-			square{_e, _3},
-			square{_f, _3},
-			square{_d, _4},
-			square{_f, _4},
-			square{_d, _5},
-			square{_e, _5},
-			square{_f, _5},
+			{_d, _3},
+			{_e, _3},
+			{_f, _3},
+			{_d, _4},
+			{_f, _4},
+			{_d, _5},
+			{_e, _5},
+			{_f, _5},
 		}
 		for _, to := range tos {
 			legal := board.validateMove(from, to)
@@ -53,11 +53,11 @@ func TestValidateMoveKingIllegalDistance(t *testing.T) {
 	board[_e][_4] = wking
 	from := square{_e, _4}
 	tos := []square{
-		square{_e, _2},
-		square{_e, _6},
-		square{_c, _4},
-		square{_g, _4},
-		square{_g, _6},
+		{_e, _2},
+		{_e, _6},
+		{_c, _4},
+		{_g, _4},
+		{_g, _6},
 	}
 	for _, to := range tos {
 		legal := board.validateMove(from, to)
@@ -77,20 +77,20 @@ func TestValidateMoveRookLegalEmpty(t *testing.T) {
 	board[_e][_4] = wrook
 	from := square{_e, _4}
 	tos := []square{
-		square{_a, _4},
-		square{_b, _4},
-		square{_c, _4},
-		square{_d, _4},
-		square{_f, _4},
-		square{_g, _4},
-		square{_h, _4},
-		square{_e, _1},
-		square{_e, _2},
-		square{_e, _3},
-		square{_e, _5},
-		square{_e, _6},
-		square{_e, _7},
-		square{_e, _8},
+		{_a, _4},
+		{_b, _4},
+		{_c, _4},
+		{_d, _4},
+		{_f, _4},
+		{_g, _4},
+		{_h, _4},
+		{_e, _1},
+		{_e, _2},
+		{_e, _3},
+		{_e, _5},
+		{_e, _6},
+		{_e, _7},
+		{_e, _8},
 	}
 	for _, to := range tos {
 		legal := board.validateMove(from, to)
@@ -130,10 +130,10 @@ func TestValidateMoveRookIllegalObstructed(t *testing.T) {
 	board[_g][_4] = brook
 	from := square{_e, _4}
 	tos := []square{
-		square{_e, _8},
-		square{_e, _1},
-		square{_a, _4},
-		square{_h, _4},
+		{_e, _8},
+		{_e, _1},
+		{_a, _4},
+		{_h, _4},
 	}
 	for _, to := range tos {
 		legal := board.validateMove(from, to)
@@ -153,19 +153,19 @@ func TestValidateMoveBishopLegalEmpty(t *testing.T) {
 	board[_e][_4] = wbishop
 	from := square{_e, _4}
 	tos := []square{
-		square{_b, _1},
-		square{_c, _2},
-		square{_d, _3},
-		square{_a, _8},
-		square{_b, _7},
-		square{_c, _6},
-		square{_d, _5},
-		square{_f, _5},
-		square{_g, _6},
-		square{_h, _7},
-		square{_f, _3},
-		square{_g, _2},
-		square{_h, _1},
+		{_b, _1},
+		{_c, _2},
+		{_d, _3},
+		{_a, _8},
+		{_b, _7},
+		{_c, _6},
+		{_d, _5},
+		{_f, _5},
+		{_g, _6},
+		{_h, _7},
+		{_f, _3},
+		{_g, _2},
+		{_h, _1},
 	}
 	for _, to := range tos {
 		legal := board.validateMove(from, to)
@@ -205,10 +205,10 @@ func TestValidateMoveBishopIllegalObstructed(t *testing.T) {
 	board[_g][_2] = brook
 	from := square{_e, _4}
 	tos := []square{
-		square{_a, _8},
-		square{_b, _1},
-		square{_h, _7},
-		square{_h, _1},
+		{_a, _8},
+		{_b, _1},
+		{_h, _7},
+		{_h, _1},
 	}
 	for _, to := range tos {
 		legal := board.validateMove(from, to)
@@ -228,33 +228,33 @@ func TestValidateMoveQueenLegalEmpty(t *testing.T) {
 	board[_e][_4] = wqueen
 	from := square{_e, _4}
 	tos := []square{
-		square{_a, _4},
-		square{_b, _4},
-		square{_c, _4},
-		square{_d, _4},
-		square{_f, _4},
-		square{_g, _4},
-		square{_h, _4},
-		square{_e, _1},
-		square{_e, _2},
-		square{_e, _3},
-		square{_e, _5},
-		square{_e, _6},
-		square{_e, _7},
-		square{_e, _8},
-		square{_b, _1},
-		square{_c, _2},
-		square{_d, _3},
-		square{_a, _8},
-		square{_b, _7},
-		square{_c, _6},
-		square{_d, _5},
-		square{_f, _5},
-		square{_g, _6},
-		square{_h, _7},
-		square{_f, _3},
-		square{_g, _2},
-		square{_h, _1},
+		{_a, _4},
+		{_b, _4},
+		{_c, _4},
+		{_d, _4},
+		{_f, _4},
+		{_g, _4},
+		{_h, _4},
+		{_e, _1},
+		{_e, _2},
+		{_e, _3},
+		{_e, _5},
+		{_e, _6},
+		{_e, _7},
+		{_e, _8},
+		{_b, _1},
+		{_c, _2},
+		{_d, _3},
+		{_a, _8},
+		{_b, _7},
+		{_c, _6},
+		{_d, _5},
+		{_f, _5},
+		{_g, _6},
+		{_h, _7},
+		{_f, _3},
+		{_g, _2},
+		{_h, _1},
 	}
 	for _, to := range tos {
 		legal := board.validateMove(from, to)
@@ -298,14 +298,14 @@ func TestValidateMoveQueenIllegalObstructed(t *testing.T) {
 	board[_g][_4] = brook
 	from := square{_e, _4}
 	tos := []square{
-		square{_a, _8},
-		square{_b, _1},
-		square{_h, _7},
-		square{_h, _1},
-		square{_e, _8},
-		square{_e, _1},
-		square{_a, _4},
-		square{_h, _4},
+		{_a, _8},
+		{_b, _1},
+		{_h, _7},
+		{_h, _1},
+		{_e, _8},
+		{_e, _1},
+		{_a, _4},
+		{_h, _4},
 	}
 	for _, to := range tos {
 		legal := board.validateMove(from, to)
@@ -325,14 +325,14 @@ func TestValidateMoveKnightLegalEmpty(t *testing.T) {
 	board[_e][_4] = wknight
 	from := square{_e, _4}
 	tos := []square{
-		square{_c, _3},
-		square{_c, _5},
-		square{_d, _2},
-		square{_d, _6},
-		square{_f, _2},
-		square{_f, _6},
-		square{_g, _3},
-		square{_g, _5},
+		{_c, _3},
+		{_c, _5},
+		{_d, _2},
+		{_d, _6},
+		{_f, _2},
+		{_f, _6},
+		{_g, _3},
+		{_g, _5},
 	}
 	for _, to := range tos {
 		legal := board.validateMove(from, to)
@@ -368,8 +368,8 @@ func TestValidateMoveWhitePawnLegalStartingPos(t *testing.T) {
 	board[_e][_2] = wpawn
 	from := square{_e, _2}
 	tos := []square{
-		square{_e, _3},
-		square{_e, _4},
+		{_e, _3},
+		{_e, _4},
 	}
 	for _, to := range tos {
 		legal := board.validateMove(from, to)
@@ -407,8 +407,8 @@ func TestValidateMoveWhitePawnLegalTaking(t *testing.T) {
 	board[_f][_5] = bknight
 	from := square{_e, _4}
 	tos := []square{
-		square{_d, _5},
-		square{_f, _5},
+		{_d, _5},
+		{_f, _5},
 	}
 	for _, to := range tos {
 		legal := board.validateMove(from, to)
@@ -428,10 +428,10 @@ func TestValidateMoveWhitePawnIllegal(t *testing.T) {
 	board[_e][_2] = wpawn
 	from := square{_e, _2}
 	tos := []square{
-		square{_e, _1},
-		square{_e, _5},
-		square{_d, _2},
-		square{_d, _3},
+		{_e, _1},
+		{_e, _5},
+		{_d, _2},
+		{_d, _3},
 	}
 	for _, to := range tos {
 		legal := board.validateMove(from, to)
@@ -451,8 +451,8 @@ func TestValidateMoveBlackPawnLegalStartingPos(t *testing.T) {
 	board[_e][_7] = bpawn
 	from := square{_e, _7}
 	tos := []square{
-		square{_e, _6},
-		square{_e, _5},
+		{_e, _6},
+		{_e, _5},
 	}
 	for _, to := range tos {
 		legal := board.validateMove(from, to)
@@ -490,8 +490,8 @@ func TestValidateMoveBlackPawnLegalTaking(t *testing.T) {
 	board[_f][_4] = wknight
 	from := square{_e, _5}
 	tos := []square{
-		square{_d, _4},
-		square{_f, _4},
+		{_d, _4},
+		{_f, _4},
 	}
 	for _, to := range tos {
 		legal := board.validateMove(from, to)
@@ -511,10 +511,10 @@ func TestValidateMoveBlackPawnIllegal(t *testing.T) {
 	board[_e][_7] = bpawn
 	from := square{_e, _7}
 	tos := []square{
-		square{_e, _8},
-		square{_e, _4},
-		square{_d, _7},
-		square{_d, _6},
+		{_e, _8},
+		{_e, _4},
+		{_d, _7},
+		{_d, _6},
 	}
 	for _, to := range tos {
 		legal := board.validateMove(from, to)
@@ -534,33 +534,33 @@ func TestSquareAttackedByPlayerQueenWhite(t *testing.T) {
 	sq := square{_e, _4}
 	player := white
 	attackers := []square{
-		square{_a, _4},
-		square{_b, _4},
-		square{_c, _4},
-		square{_d, _4},
-		square{_f, _4},
-		square{_g, _4},
-		square{_h, _4},
-		square{_e, _1},
-		square{_e, _2},
-		square{_e, _3},
-		square{_e, _5},
-		square{_e, _6},
-		square{_e, _7},
-		square{_e, _8},
-		square{_b, _1},
-		square{_c, _2},
-		square{_d, _3},
-		square{_a, _8},
-		square{_b, _7},
-		square{_c, _6},
-		square{_d, _5},
-		square{_f, _5},
-		square{_g, _6},
-		square{_h, _7},
-		square{_f, _3},
-		square{_g, _2},
-		square{_h, _1},
+		{_a, _4},
+		{_b, _4},
+		{_c, _4},
+		{_d, _4},
+		{_f, _4},
+		{_g, _4},
+		{_h, _4},
+		{_e, _1},
+		{_e, _2},
+		{_e, _3},
+		{_e, _5},
+		{_e, _6},
+		{_e, _7},
+		{_e, _8},
+		{_b, _1},
+		{_c, _2},
+		{_d, _3},
+		{_a, _8},
+		{_b, _7},
+		{_c, _6},
+		{_d, _5},
+		{_f, _5},
+		{_g, _6},
+		{_h, _7},
+		{_f, _3},
+		{_g, _2},
+		{_h, _1},
 	}
 	for _, attacker := range attackers {
 		board[attacker.file][attacker.row] = wqueen
@@ -582,33 +582,33 @@ func TestSquareAttackedByPlayerQueenBlack(t *testing.T) {
 	sq := square{_e, _4}
 	player := black
 	attackers := []square{
-		square{_a, _4},
-		square{_b, _4},
-		square{_c, _4},
-		square{_d, _4},
-		square{_f, _4},
-		square{_g, _4},
-		square{_h, _4},
-		square{_e, _1},
-		square{_e, _2},
-		square{_e, _3},
-		square{_e, _5},
-		square{_e, _6},
-		square{_e, _7},
-		square{_e, _8},
-		square{_b, _1},
-		square{_c, _2},
-		square{_d, _3},
-		square{_a, _8},
-		square{_b, _7},
-		square{_c, _6},
-		square{_d, _5},
-		square{_f, _5},
-		square{_g, _6},
-		square{_h, _7},
-		square{_f, _3},
-		square{_g, _2},
-		square{_h, _1},
+		{_a, _4},
+		{_b, _4},
+		{_c, _4},
+		{_d, _4},
+		{_f, _4},
+		{_g, _4},
+		{_h, _4},
+		{_e, _1},
+		{_e, _2},
+		{_e, _3},
+		{_e, _5},
+		{_e, _6},
+		{_e, _7},
+		{_e, _8},
+		{_b, _1},
+		{_c, _2},
+		{_d, _3},
+		{_a, _8},
+		{_b, _7},
+		{_c, _6},
+		{_d, _5},
+		{_f, _5},
+		{_g, _6},
+		{_h, _7},
+		{_f, _3},
+		{_g, _2},
+		{_h, _1},
 	}
 	for _, attacker := range attackers {
 		board[attacker.file][attacker.row] = bqueen
@@ -630,20 +630,20 @@ func TestSquareAttackedByPlayerRookWhite(t *testing.T) {
 	sq := square{_e, _4}
 	player := white
 	attackers := []square{
-		square{_a, _4},
-		square{_b, _4},
-		square{_c, _4},
-		square{_d, _4},
-		square{_f, _4},
-		square{_g, _4},
-		square{_h, _4},
-		square{_e, _1},
-		square{_e, _2},
-		square{_e, _3},
-		square{_e, _5},
-		square{_e, _6},
-		square{_e, _7},
-		square{_e, _8},
+		{_a, _4},
+		{_b, _4},
+		{_c, _4},
+		{_d, _4},
+		{_f, _4},
+		{_g, _4},
+		{_h, _4},
+		{_e, _1},
+		{_e, _2},
+		{_e, _3},
+		{_e, _5},
+		{_e, _6},
+		{_e, _7},
+		{_e, _8},
 	}
 	for _, attacker := range attackers {
 		board[attacker.file][attacker.row] = wrook
@@ -665,20 +665,20 @@ func TestSquareAttackedByPlayerRookBlack(t *testing.T) {
 	sq := square{_e, _4}
 	player := black
 	attackers := []square{
-		square{_a, _4},
-		square{_b, _4},
-		square{_c, _4},
-		square{_d, _4},
-		square{_f, _4},
-		square{_g, _4},
-		square{_h, _4},
-		square{_e, _1},
-		square{_e, _2},
-		square{_e, _3},
-		square{_e, _5},
-		square{_e, _6},
-		square{_e, _7},
-		square{_e, _8},
+		{_a, _4},
+		{_b, _4},
+		{_c, _4},
+		{_d, _4},
+		{_f, _4},
+		{_g, _4},
+		{_h, _4},
+		{_e, _1},
+		{_e, _2},
+		{_e, _3},
+		{_e, _5},
+		{_e, _6},
+		{_e, _7},
+		{_e, _8},
 	}
 	for _, attacker := range attackers {
 		board[attacker.file][attacker.row] = brook
@@ -700,19 +700,19 @@ func TestSquareAttackedByPlayerRookFalseDiagonal(t *testing.T) {
 	sq := square{_e, _4}
 	player := black
 	attackers := []square{
-		square{_b, _1},
-		square{_c, _2},
-		square{_d, _3},
-		square{_a, _8},
-		square{_b, _7},
-		square{_c, _6},
-		square{_d, _5},
-		square{_f, _5},
-		square{_g, _6},
-		square{_h, _7},
-		square{_f, _3},
-		square{_g, _2},
-		square{_h, _1},
+		{_b, _1},
+		{_c, _2},
+		{_d, _3},
+		{_a, _8},
+		{_b, _7},
+		{_c, _6},
+		{_d, _5},
+		{_f, _5},
+		{_g, _6},
+		{_h, _7},
+		{_f, _3},
+		{_g, _2},
+		{_h, _1},
 	}
 	for _, attacker := range attackers {
 		board[attacker.file][attacker.row] = brook
@@ -734,19 +734,19 @@ func TestSquareAttackedByPlayerBishopWhite(t *testing.T) {
 	sq := square{_e, _4}
 	player := white
 	attackers := []square{
-		square{_b, _1},
-		square{_c, _2},
-		square{_d, _3},
-		square{_a, _8},
-		square{_b, _7},
-		square{_c, _6},
-		square{_d, _5},
-		square{_f, _5},
-		square{_g, _6},
-		square{_h, _7},
-		square{_f, _3},
-		square{_g, _2},
-		square{_h, _1},
+		{_b, _1},
+		{_c, _2},
+		{_d, _3},
+		{_a, _8},
+		{_b, _7},
+		{_c, _6},
+		{_d, _5},
+		{_f, _5},
+		{_g, _6},
+		{_h, _7},
+		{_f, _3},
+		{_g, _2},
+		{_h, _1},
 	}
 	for _, attacker := range attackers {
 		board[attacker.file][attacker.row] = wbishop
@@ -768,19 +768,19 @@ func TestSquareAttackedByPlayerBishopBlack(t *testing.T) {
 	sq := square{_e, _4}
 	player := black
 	attackers := []square{
-		square{_b, _1},
-		square{_c, _2},
-		square{_d, _3},
-		square{_a, _8},
-		square{_b, _7},
-		square{_c, _6},
-		square{_d, _5},
-		square{_f, _5},
-		square{_g, _6},
-		square{_h, _7},
-		square{_f, _3},
-		square{_g, _2},
-		square{_h, _1},
+		{_b, _1},
+		{_c, _2},
+		{_d, _3},
+		{_a, _8},
+		{_b, _7},
+		{_c, _6},
+		{_d, _5},
+		{_f, _5},
+		{_g, _6},
+		{_h, _7},
+		{_f, _3},
+		{_g, _2},
+		{_h, _1},
 	}
 	for _, attacker := range attackers {
 		board[attacker.file][attacker.row] = bbishop
@@ -802,20 +802,20 @@ func TestSquareAttackedByPlayerBishopFalseOrthogonal(t *testing.T) {
 	sq := square{_e, _4}
 	player := black
 	attackers := []square{
-		square{_a, _4},
-		square{_b, _4},
-		square{_c, _4},
-		square{_d, _4},
-		square{_f, _4},
-		square{_g, _4},
-		square{_h, _4},
-		square{_e, _1},
-		square{_e, _2},
-		square{_e, _3},
-		square{_e, _5},
-		square{_e, _6},
-		square{_e, _7},
-		square{_e, _8},
+		{_a, _4},
+		{_b, _4},
+		{_c, _4},
+		{_d, _4},
+		{_f, _4},
+		{_g, _4},
+		{_h, _4},
+		{_e, _1},
+		{_e, _2},
+		{_e, _3},
+		{_e, _5},
+		{_e, _6},
+		{_e, _7},
+		{_e, _8},
 	}
 	for _, attacker := range attackers {
 		board[attacker.file][attacker.row] = bbishop
@@ -858,8 +858,8 @@ func TestSquareAttackedByPlayerPawnWhite(t *testing.T) {
 	sq := square{_e, _4}
 	player := white
 	attackers := []square{
-		square{_d, _3},
-		square{_f, _3},
+		{_d, _3},
+		{_f, _3},
 	}
 	for _, attacker := range attackers {
 		board[attacker.file][attacker.row] = wpawn
@@ -881,8 +881,8 @@ func TestSquareAttackedByPlayerPawnBlack(t *testing.T) {
 	sq := square{_e, _4}
 	player := black
 	attackers := []square{
-		square{_d, _5},
-		square{_f, _5},
+		{_d, _5},
+		{_f, _5},
 	}
 	for _, attacker := range attackers {
 		board[attacker.file][attacker.row] = bpawn
@@ -904,10 +904,10 @@ func TestSquareAttackedByPlayerPawnFalse(t *testing.T) {
 	sq := square{_e, _4}
 	player := white
 	attackers := []square{
-		square{_e, _3},
-		square{_e, _2},
-		square{_d, _5},
-		square{_f, _5},
+		{_e, _3},
+		{_e, _2},
+		{_d, _5},
+		{_f, _5},
 	}
 	for _, attacker := range attackers {
 		board[attacker.file][attacker.row] = wpawn
@@ -929,14 +929,14 @@ func TestSquareAttackedByPlayerKnightWhite(t *testing.T) {
 	sq := square{_e, _4}
 	player := white
 	attackers := []square{
-		square{_d, _2},
-		square{_f, _2},
-		square{_c, _3},
-		square{_g, _3},
-		square{_c, _5},
-		square{_g, _5},
-		square{_d, _6},
-		square{_f, _6},
+		{_d, _2},
+		{_f, _2},
+		{_c, _3},
+		{_g, _3},
+		{_c, _5},
+		{_g, _5},
+		{_d, _6},
+		{_f, _6},
 	}
 	for _, attacker := range attackers {
 		board[attacker.file][attacker.row] = wknight
@@ -958,14 +958,14 @@ func TestSquareAttackedByPlayerKnightBlack(t *testing.T) {
 	sq := square{_e, _4}
 	player := black
 	attackers := []square{
-		square{_d, _2},
-		square{_f, _2},
-		square{_c, _3},
-		square{_g, _3},
-		square{_c, _5},
-		square{_g, _5},
-		square{_d, _6},
-		square{_f, _6},
+		{_d, _2},
+		{_f, _2},
+		{_c, _3},
+		{_g, _3},
+		{_c, _5},
+		{_g, _5},
+		{_d, _6},
+		{_f, _6},
 	}
 	for _, attacker := range attackers {
 		board[attacker.file][attacker.row] = bknight
