@@ -416,3 +416,7 @@ func (p player) String() string {
 	}
 	return "black"
 }
+
+func (sq square) String() string {
+	return fmt.Sprintf("%c%c", sq.file + fileUnicodeOffset, sq.row + rowUnicodeOffset)
+}
