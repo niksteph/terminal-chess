@@ -884,6 +884,59 @@ func TestGenerateValidMovesKingNoMoves(t *testing.T) {
 	}
 }
 
+func TestGenerateValidMovesRook(t *testing.T) {
+	var pos position
+	pos.board.clear()
+	pos.board[_e][_4] = wrook
+	pos.turn = white
+	want := []square{
+		{_e, _1},
+		{_e, _2},
+		{_e, _3},
+		{_e, _5},
+		{_e, _6},
+		{_e, _7},
+		{_e, _8},
+		{_a, _4},
+		{_b, _4},
+		{_c, _4},
+		{_d, _4},
+		{_f, _4},
+		{_g, _4},
+		{_h, _4},
+	}
+	got := pos.generateValidMoves()
+	from := square{_e, _4}
+	if !equivalent(want, got[from]) {
+		t.Errorf("Generated moves are wrong. Want %v but got %v.", want, got)
+	}
+}
+
+func TestGenerateValidMovesRookObstructed(t *testing.T) {
+	var pos position
+	pos.board.clear()
+	pos.board[_e][_4] = wrook
+	pos.board[_e][_3] = wpawn
+	pos.board[_c][_4] = brook
+	pos.turn = white
+	want := []square{
+		{_e, _5},
+		{_e, _6},
+		{_e, _7},
+		{_e, _8},
+		{_c, _4},
+		{_d, _4},
+		{_f, _4},
+		{_g, _4},
+		{_h, _4},
+	}
+	got := pos.generateValidMoves()
+	from := square{_e, _4}
+	if !equivalent(want, got[from]) {
+		t.Errorf("Generated moves are wrong. Want %v but got %v.", want, got)
+	}
+}
+
 func TestParseMoveOk(t *testing.T) {
 	move := "e2-a5"
 	gotFrom, gotTo, err := parseMove(move)
