@@ -1,6 +1,7 @@
 package main
 
 import (
+	"maps"
 	"slices"
 	"testing"
 )
@@ -849,19 +850,20 @@ func TestGenerateValidMovesKing(t *testing.T) {
 	pos.board.clear()
 	pos.board[_e][_4] = wking
 	pos.turn = white
-	want := []square{
-		{_d, _3},
-		{_d, _4},
-		{_d, _5},
-		{_e, _3},
-		{_e, _5},
-		{_f, _3},
-		{_f, _4},
-		{_f, _5},
+	want := map[square][]square{
+		{_e, _4}: {
+			{_d, _3},
+			{_d, _4},
+			{_d, _5},
+			{_e, _3},
+			{_e, _5},
+			{_f, _3},
+			{_f, _4},
+			{_f, _5},
+		},
 	}
 	got := pos.generateValidMoves()
-	from := square{_e, _4}
-	if !equivalent(want, got[from]) {
+	if !maps.EqualFunc(want, got, equivalent) {
 		t.Errorf("Generated moves are wrong. Want %v but got %v.", want, got)
 	}
 }
@@ -876,10 +878,9 @@ func TestGenerateValidMovesKingNoMoves(t *testing.T) {
 	pos.board[_d][_1] = brook
 	pos.board[_f][_4] = bpawn
 	pos.turn = white
-	want := []square{}
+	want := map[square][]square{{_e, _4}: {}}
 	got := pos.generateValidMoves()
-	from := square{_e, _4}
-	if !equivalent(want, got[from]) {
+	if !maps.EqualFunc(want, got, equivalent) {
 		t.Errorf("Generated moves are wrong. Want %v but got %v.", want, got)
 	}
 }
@@ -889,25 +890,26 @@ func TestGenerateValidMovesRook(t *testing.T) {
 	pos.board.clear()
 	pos.board[_e][_4] = wrook
 	pos.turn = white
-	want := []square{
-		{_e, _1},
-		{_e, _2},
-		{_e, _3},
-		{_e, _5},
-		{_e, _6},
-		{_e, _7},
-		{_e, _8},
-		{_a, _4},
-		{_b, _4},
-		{_c, _4},
-		{_d, _4},
-		{_f, _4},
-		{_g, _4},
-		{_h, _4},
+	want := map[square][]square{
+		{_e, _4}: {
+			{_e, _1},
+			{_e, _2},
+			{_e, _3},
+			{_e, _5},
+			{_e, _6},
+			{_e, _7},
+			{_e, _8},
+			{_a, _4},
+			{_b, _4},
+			{_c, _4},
+			{_d, _4},
+			{_f, _4},
+			{_g, _4},
+			{_h, _4},
+		},
 	}
 	got := pos.generateValidMoves()
-	from := square{_e, _4}
-	if !equivalent(want, got[from]) {
+	if !maps.EqualFunc(want, got, equivalent) {
 		t.Errorf("Generated moves are wrong. Want %v but got %v.", want, got)
 	}
 }
@@ -919,20 +921,21 @@ func TestGenerateValidMovesRookObstructed(t *testing.T) {
 	pos.board[_e][_3] = wpawn
 	pos.board[_c][_4] = brook
 	pos.turn = white
-	want := []square{
-		{_e, _5},
-		{_e, _6},
-		{_e, _7},
-		{_e, _8},
-		{_c, _4},
-		{_d, _4},
-		{_f, _4},
-		{_g, _4},
-		{_h, _4},
+	want := map[square][]square{
+		{_e, _4}: {
+			{_e, _5},
+			{_e, _6},
+			{_e, _7},
+			{_e, _8},
+			{_c, _4},
+			{_d, _4},
+			{_f, _4},
+			{_g, _4},
+			{_h, _4},
+		},
 	}
 	got := pos.generateValidMoves()
-	from := square{_e, _4}
-	if !equivalent(want, got[from]) {
+	if !maps.EqualFunc(want, got, equivalent) {
 		t.Errorf("Generated moves are wrong. Want %v but got %v.", want, got)
 	}
 }
