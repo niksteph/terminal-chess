@@ -38,11 +38,7 @@ func TestValidateMoveKingLegalEmpty(t *testing.T) {
 		for _, to := range tos {
 			legal := board.validateMove(from, to)
 			if !legal {
-				t.Errorf("Move from %c%c to %c%c should be legal but is illegal.",
-					from.file+fileUnicodeOffset,
-					from.row+rowUnicodeOffset,
-					to.file+fileUnicodeOffset,
-					to.row+rowUnicodeOffset)
+				t.Errorf("Move from %v to %v should be legal but is illegal.", from, to)
 			}
 		}
 	}
@@ -63,11 +59,7 @@ func TestValidateMoveKingIllegalDistance(t *testing.T) {
 	for _, to := range tos {
 		legal := board.validateMove(from, to)
 		if legal {
-			t.Errorf("Move from %c%c to %c%c should be illegal but is legal.",
-				from.file+fileUnicodeOffset,
-				from.row+rowUnicodeOffset,
-				to.file+fileUnicodeOffset,
-				to.row+rowUnicodeOffset)
+			t.Errorf("Move from %v to %v should be illegal but is legal.", from, to)
 		}
 	}
 }
@@ -96,11 +88,7 @@ func TestValidateMoveRookLegalEmpty(t *testing.T) {
 	for _, to := range tos {
 		legal := board.validateMove(from, to)
 		if !legal {
-			t.Errorf("Move from %c%c to %c%c should be legal but is illegal.",
-				from.file+fileUnicodeOffset,
-				from.row+rowUnicodeOffset,
-				to.file+fileUnicodeOffset,
-				to.row+rowUnicodeOffset)
+			t.Errorf("Move from %v to %v should be legal but is illegal.", from, to)
 		}
 	}
 }
@@ -113,11 +101,7 @@ func TestValidateMoveRookIllegalDiagonal(t *testing.T) {
 	to := square{_f, _5}
 	legal := board.validateMove(from, to)
 	if legal {
-		t.Errorf("Move from %c%c to %c%c should be illegal but is legal.",
-			from.file+fileUnicodeOffset,
-			from.row+rowUnicodeOffset,
-			to.file+fileUnicodeOffset,
-			to.row+rowUnicodeOffset)
+		t.Errorf("Move from %v to %v should be illegal but is legal.", from, to)
 	}
 }
 
@@ -139,11 +123,7 @@ func TestValidateMoveRookIllegalObstructed(t *testing.T) {
 	for _, to := range tos {
 		legal := board.validateMove(from, to)
 		if legal {
-			t.Errorf("Move from %c%c to %c%c should be illegal but is legal.",
-				from.file+fileUnicodeOffset,
-				from.row+rowUnicodeOffset,
-				to.file+fileUnicodeOffset,
-				to.row+rowUnicodeOffset)
+			t.Errorf("Move from %v to %v should be illegal but is legal.", from, to)
 		}
 	}
 }
@@ -171,11 +151,7 @@ func TestValidateMoveBishopLegalEmpty(t *testing.T) {
 	for _, to := range tos {
 		legal := board.validateMove(from, to)
 		if !legal {
-			t.Errorf("Move from %c%c to %c%c should be legal but is illegal.",
-				from.file+fileUnicodeOffset,
-				from.row+rowUnicodeOffset,
-				to.file+fileUnicodeOffset,
-				to.row+rowUnicodeOffset)
+			t.Errorf("Move from %v to %v should be legal but is illegal.", from, to)
 		}
 	}
 }
@@ -188,11 +164,7 @@ func TestValidateMoveBishopIllegalOrthogonal(t *testing.T) {
 	to := square{_e, _3}
 	legal := board.validateMove(from, to)
 	if legal {
-		t.Errorf("Move from %c%c to %c%c should be illegal but is legal.",
-			from.file+fileUnicodeOffset,
-			from.row+rowUnicodeOffset,
-			to.file+fileUnicodeOffset,
-			to.row+rowUnicodeOffset)
+		t.Errorf("Move from %v to %v should be illegal but is legal.", from, to)
 	}
 }
 
@@ -214,11 +186,7 @@ func TestValidateMoveBishopIllegalObstructed(t *testing.T) {
 	for _, to := range tos {
 		legal := board.validateMove(from, to)
 		if legal {
-			t.Errorf("Move from %c%c to %c%c should be illegal but is legal.",
-				from.file+fileUnicodeOffset,
-				from.row+rowUnicodeOffset,
-				to.file+fileUnicodeOffset,
-				to.row+rowUnicodeOffset)
+			t.Errorf("Move from %v to %v should be illegal but is legal.", from, to)
 		}
 	}
 }
@@ -260,11 +228,7 @@ func TestValidateMoveQueenLegalEmpty(t *testing.T) {
 	for _, to := range tos {
 		legal := board.validateMove(from, to)
 		if !legal {
-			t.Errorf("Move from %c%c to %c%c should be legal but is illegal.",
-				from.file+fileUnicodeOffset,
-				from.row+rowUnicodeOffset,
-				to.file+fileUnicodeOffset,
-				to.row+rowUnicodeOffset)
+			t.Errorf("Move from %v to %v should be legal but is illegal.", from, to)
 		}
 	}
 }
@@ -277,11 +241,7 @@ func TestValidateMoveQueenIllegal(t *testing.T) {
 	to := square{_f, _2}
 	legal := board.validateMove(from, to)
 	if legal {
-		t.Errorf("Move from %c%c to %c%c should be illegal but is legal.",
-			from.file+fileUnicodeOffset,
-			from.row+rowUnicodeOffset,
-			to.file+fileUnicodeOffset,
-			to.row+rowUnicodeOffset)
+		t.Errorf("Move from %v to %v should be illegal but is legal.", from, to)
 	}
 }
 
@@ -311,11 +271,7 @@ func TestValidateMoveQueenIllegalObstructed(t *testing.T) {
 	for _, to := range tos {
 		legal := board.validateMove(from, to)
 		if legal {
-			t.Errorf("Move from %c%c to %c%c should be illegal but is legal.",
-				from.file+fileUnicodeOffset,
-				from.row+rowUnicodeOffset,
-				to.file+fileUnicodeOffset,
-				to.row+rowUnicodeOffset)
+			t.Errorf("Move from %v to %v should be illegal but is legal.", from, to)
 		}
 	}
 }
@@ -338,11 +294,7 @@ func TestValidateMoveKnightLegalEmpty(t *testing.T) {
 	for _, to := range tos {
 		legal := board.validateMove(from, to)
 		if !legal {
-			t.Errorf("Move from %c%c to %c%c should be legal but is illegal.",
-				from.file+fileUnicodeOffset,
-				from.row+rowUnicodeOffset,
-				to.file+fileUnicodeOffset,
-				to.row+rowUnicodeOffset)
+			t.Errorf("Move from %v to %v should be legal but is illegal.", from, to)
 		}
 	}
 }
@@ -355,11 +307,7 @@ func TestValidateMoveKnightIllegal(t *testing.T) {
 	to := square{_e, _5}
 	legal := board.validateMove(from, to)
 	if legal {
-		t.Errorf("Move from %c%c to %c%c should be illegal but is legal.",
-			from.file+fileUnicodeOffset,
-			from.row+rowUnicodeOffset,
-			to.file+fileUnicodeOffset,
-			to.row+rowUnicodeOffset)
+		t.Errorf("Move from %v to %v should be illegal but is legal.", from, to)
 	}
 }
 
@@ -375,11 +323,7 @@ func TestValidateMoveWhitePawnLegalStartingPos(t *testing.T) {
 	for _, to := range tos {
 		legal := board.validateMove(from, to)
 		if !legal {
-			t.Errorf("Move from %c%c to %c%c should be legal but is illegal.",
-				from.file+fileUnicodeOffset,
-				from.row+rowUnicodeOffset,
-				to.file+fileUnicodeOffset,
-				to.row+rowUnicodeOffset)
+			t.Errorf("Move from %v to %v should be legal but is illegal.", from, to)
 		}
 	}
 }
@@ -392,11 +336,7 @@ func TestValidateMoveWhitePawnLegalStandard(t *testing.T) {
 	to := square{_e, _4}
 	legal := board.validateMove(from, to)
 	if !legal {
-		t.Errorf("Move from %c%c to %c%c should be legal but is illegal.",
-			from.file+fileUnicodeOffset,
-			from.row+rowUnicodeOffset,
-			to.file+fileUnicodeOffset,
-			to.row+rowUnicodeOffset)
+		t.Errorf("Move from %v to %v should be legal but is illegal.", from, to)
 	}
 }
 
@@ -414,11 +354,7 @@ func TestValidateMoveWhitePawnLegalTaking(t *testing.T) {
 	for _, to := range tos {
 		legal := board.validateMove(from, to)
 		if !legal {
-			t.Errorf("Move from %c%c to %c%c should be legal but is illegal.",
-				from.file+fileUnicodeOffset,
-				from.row+rowUnicodeOffset,
-				to.file+fileUnicodeOffset,
-				to.row+rowUnicodeOffset)
+			t.Errorf("Move from %v to %v should be legal but is illegal.", from, to)
 		}
 	}
 }
@@ -437,11 +373,7 @@ func TestValidateMoveWhitePawnIllegal(t *testing.T) {
 	for _, to := range tos {
 		legal := board.validateMove(from, to)
 		if legal {
-			t.Errorf("Move from %c%c to %c%c should be illegal but is legal.",
-				from.file+fileUnicodeOffset,
-				from.row+rowUnicodeOffset,
-				to.file+fileUnicodeOffset,
-				to.row+rowUnicodeOffset)
+			t.Errorf("Move from %v to %v should be illegal but is legal.", from, to)
 		}
 	}
 }
@@ -458,11 +390,7 @@ func TestValidateMoveBlackPawnLegalStartingPos(t *testing.T) {
 	for _, to := range tos {
 		legal := board.validateMove(from, to)
 		if !legal {
-			t.Errorf("Move from %c%c to %c%c should be legal but is illegal.",
-				from.file+fileUnicodeOffset,
-				from.row+rowUnicodeOffset,
-				to.file+fileUnicodeOffset,
-				to.row+rowUnicodeOffset)
+			t.Errorf("Move from %v to %v should be legal but is illegal.", from, to)
 		}
 	}
 }
@@ -475,11 +403,7 @@ func TestValidateMoveBlackPawnLegalStandard(t *testing.T) {
 	to := square{_e, _5}
 	legal := board.validateMove(from, to)
 	if !legal {
-		t.Errorf("Move from %c%c to %c%c should be legal but is illegal.",
-			from.file+fileUnicodeOffset,
-			from.row+rowUnicodeOffset,
-			to.file+fileUnicodeOffset,
-			to.row+rowUnicodeOffset)
+		t.Errorf("Move from %v to %v should be legal but is illegal.", from, to)
 	}
 }
 
@@ -497,11 +421,7 @@ func TestValidateMoveBlackPawnLegalTaking(t *testing.T) {
 	for _, to := range tos {
 		legal := board.validateMove(from, to)
 		if !legal {
-			t.Errorf("Move from %c%c to %c%c should be legal but is illegal.",
-				from.file+fileUnicodeOffset,
-				from.row+rowUnicodeOffset,
-				to.file+fileUnicodeOffset,
-				to.row+rowUnicodeOffset)
+			t.Errorf("Move from %v to %v should be legal but is illegal.", from, to)
 		}
 	}
 }
@@ -520,11 +440,7 @@ func TestValidateMoveBlackPawnIllegal(t *testing.T) {
 	for _, to := range tos {
 		legal := board.validateMove(from, to)
 		if legal {
-			t.Errorf("Move from %c%c to %c%c should be illegal but is legal.",
-				from.file+fileUnicodeOffset,
-				from.row+rowUnicodeOffset,
-				to.file+fileUnicodeOffset,
-				to.row+rowUnicodeOffset)
+			t.Errorf("Move from %v to %v should be illegal but is legal.", from, to)
 		}
 	}
 }
@@ -568,11 +484,7 @@ func TestSquareAttackedByPlayerQueenWhite(t *testing.T) {
 		attacked := board.squareAttackedByPlayer(sq, player)
 		board[attacker.file][attacker.row] = empty
 		if !attacked {
-			t.Errorf("Square %c%c should be attacked by %c%c but is not.",
-				sq.file+fileUnicodeOffset,
-				sq.row+rowUnicodeOffset,
-				attacker.file+fileUnicodeOffset,
-				attacker.row+rowUnicodeOffset)
+			t.Errorf("Square %v should be attacked by %v but is not.", sq, attacker)
 		}
 	}
 }
@@ -616,11 +528,7 @@ func TestSquareAttackedByPlayerQueenBlack(t *testing.T) {
 		attacked := board.squareAttackedByPlayer(sq, player)
 		board[attacker.file][attacker.row] = empty
 		if !attacked {
-			t.Errorf("Square %c%c should be attacked by %c%c but is not.",
-				sq.file+fileUnicodeOffset,
-				sq.row+rowUnicodeOffset,
-				attacker.file+fileUnicodeOffset,
-				attacker.row+rowUnicodeOffset)
+			t.Errorf("Square %v should be attacked by %v but is not.", sq, attacker)
 		}
 	}
 }
@@ -651,11 +559,7 @@ func TestSquareAttackedByPlayerRookWhite(t *testing.T) {
 		attacked := board.squareAttackedByPlayer(sq, player)
 		board[attacker.file][attacker.row] = empty
 		if !attacked {
-			t.Errorf("Square %c%c should be attacked by %c%c but is not.",
-				sq.file+fileUnicodeOffset,
-				sq.row+rowUnicodeOffset,
-				attacker.file+fileUnicodeOffset,
-				attacker.row+rowUnicodeOffset)
+			t.Errorf("Square %v should be attacked by %v but is not.", sq, attacker)
 		}
 	}
 }
@@ -686,11 +590,7 @@ func TestSquareAttackedByPlayerRookBlack(t *testing.T) {
 		attacked := board.squareAttackedByPlayer(sq, player)
 		board[attacker.file][attacker.row] = empty
 		if !attacked {
-			t.Errorf("Square %c%c should be attacked by %c%c but is not.",
-				sq.file+fileUnicodeOffset,
-				sq.row+rowUnicodeOffset,
-				attacker.file+fileUnicodeOffset,
-				attacker.row+rowUnicodeOffset)
+			t.Errorf("Square %v should be attacked by %v but is not.", sq, attacker)
 		}
 	}
 }
@@ -720,11 +620,7 @@ func TestSquareAttackedByPlayerRookFalseDiagonal(t *testing.T) {
 		attacked := board.squareAttackedByPlayer(sq, player)
 		board[attacker.file][attacker.row] = empty
 		if attacked {
-			t.Errorf("Square %c%c should not be attacked by %c%c but is.",
-				sq.file+fileUnicodeOffset,
-				sq.row+rowUnicodeOffset,
-				attacker.file+fileUnicodeOffset,
-				attacker.row+rowUnicodeOffset)
+			t.Errorf("Square %v should not be attacked by %v but is.", sq, attacker)
 		}
 	}
 }
@@ -754,11 +650,7 @@ func TestSquareAttackedByPlayerBishopWhite(t *testing.T) {
 		attacked := board.squareAttackedByPlayer(sq, player)
 		board[attacker.file][attacker.row] = empty
 		if !attacked {
-			t.Errorf("Square %c%c should be attacked by %c%c but is not.",
-				sq.file+fileUnicodeOffset,
-				sq.row+rowUnicodeOffset,
-				attacker.file+fileUnicodeOffset,
-				attacker.row+rowUnicodeOffset)
+			t.Errorf("Square %v should be attacked by %v but is not.", sq, attacker)
 		}
 	}
 }
@@ -788,11 +680,7 @@ func TestSquareAttackedByPlayerBishopBlack(t *testing.T) {
 		attacked := board.squareAttackedByPlayer(sq, player)
 		board[attacker.file][attacker.row] = empty
 		if !attacked {
-			t.Errorf("Square %c%c should be attacked by %c%c but is not.",
-				sq.file+fileUnicodeOffset,
-				sq.row+rowUnicodeOffset,
-				attacker.file+fileUnicodeOffset,
-				attacker.row+rowUnicodeOffset)
+			t.Errorf("Square %v should be attacked by %v but is not.", sq, attacker)
 		}
 	}
 }
@@ -823,11 +711,7 @@ func TestSquareAttackedByPlayerBishopFalseOrthogonal(t *testing.T) {
 		attacked := board.squareAttackedByPlayer(sq, player)
 		board[attacker.file][attacker.row] = empty
 		if attacked {
-			t.Errorf("Square %c%c should not be attacked by %c%c but is.",
-				sq.file+fileUnicodeOffset,
-				sq.row+rowUnicodeOffset,
-				attacker.file+fileUnicodeOffset,
-				attacker.row+rowUnicodeOffset)
+			t.Errorf("Square %v should not be attacked by %v but is.", sq, attacker)
 		}
 	}
 }
@@ -847,9 +731,7 @@ func TestSquareAttackedByPlayerBlackObstructed(t *testing.T) {
 	board[_f][_3] = bknight
 	attacked := board.squareAttackedByPlayer(sq, player)
 	if attacked {
-		t.Errorf("Square %c%c should not be attacked but is.",
-			sq.file+fileUnicodeOffset,
-			sq.row+rowUnicodeOffset)
+		t.Errorf("Square %v should not be attacked but is.", sq)
 	}
 }
 
@@ -867,11 +749,7 @@ func TestSquareAttackedByPlayerPawnWhite(t *testing.T) {
 		attacked := board.squareAttackedByPlayer(sq, player)
 		board[attacker.file][attacker.row] = empty
 		if !attacked {
-			t.Errorf("Square %c%c should be attacked by %c%c but is not.",
-				sq.file+fileUnicodeOffset,
-				sq.row+rowUnicodeOffset,
-				attacker.file+fileUnicodeOffset,
-				attacker.row+rowUnicodeOffset)
+			t.Errorf("Square %v should be attacked by %v but is not.", sq, attacker)
 		}
 	}
 }
@@ -890,11 +768,7 @@ func TestSquareAttackedByPlayerPawnBlack(t *testing.T) {
 		attacked := board.squareAttackedByPlayer(sq, player)
 		board[attacker.file][attacker.row] = empty
 		if !attacked {
-			t.Errorf("Square %c%c should be attacked by %c%c but is not.",
-				sq.file+fileUnicodeOffset,
-				sq.row+rowUnicodeOffset,
-				attacker.file+fileUnicodeOffset,
-				attacker.row+rowUnicodeOffset)
+			t.Errorf("Square %v should be attacked by %v but is not.", sq, attacker)
 		}
 	}
 }
@@ -915,11 +789,7 @@ func TestSquareAttackedByPlayerPawnFalse(t *testing.T) {
 		attacked := board.squareAttackedByPlayer(sq, player)
 		board[attacker.file][attacker.row] = empty
 		if attacked {
-			t.Errorf("Square %c%c should not be attacked by %c%c but is.",
-				sq.file+fileUnicodeOffset,
-				sq.row+rowUnicodeOffset,
-				attacker.file+fileUnicodeOffset,
-				attacker.row+rowUnicodeOffset)
+			t.Errorf("Square %v should not be attacked by %v but is.", sq, attacker)
 		}
 	}
 }
@@ -944,11 +814,7 @@ func TestSquareAttackedByPlayerKnightWhite(t *testing.T) {
 		attacked := board.squareAttackedByPlayer(sq, player)
 		board[attacker.file][attacker.row] = empty
 		if !attacked {
-			t.Errorf("Square %c%c should be attacked by %c%c but is not.",
-				sq.file+fileUnicodeOffset,
-				sq.row+rowUnicodeOffset,
-				attacker.file+fileUnicodeOffset,
-				attacker.row+rowUnicodeOffset)
+			t.Errorf("Square %v should be attacked by %v but is not.", sq, attacker)
 		}
 	}
 }
@@ -973,11 +839,7 @@ func TestSquareAttackedByPlayerKnightBlack(t *testing.T) {
 		attacked := board.squareAttackedByPlayer(sq, player)
 		board[attacker.file][attacker.row] = empty
 		if !attacked {
-			t.Errorf("Square %c%c should be attacked by %c%c but is not.",
-				sq.file+fileUnicodeOffset,
-				sq.row+rowUnicodeOffset,
-				attacker.file+fileUnicodeOffset,
-				attacker.row+rowUnicodeOffset)
+			t.Errorf("Square %v should be attacked by %v but is not.", sq, attacker)
 		}
 	}
 }

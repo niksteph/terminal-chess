@@ -158,18 +158,14 @@ func (position *position) move(from, to square) error {
 	}
 	var board *board = &(position.board)
 	if board[from.file][from.row] == empty {
-		return fmt.Errorf("Square %c%c is empty!", from.file+fileUnicodeOffset, from.row+rowUnicodeOffset)
+		return fmt.Errorf("Square %v is empty!", from)
 	}
 	playerOfPiece := playerOf(board[from.file][from.row])
 	if position.turn != playerOfPiece {
 		return fmt.Errorf("Not %v's turn!", playerOfPiece)
 	}
 	if !board.validateMove(from, to) {
-		return fmt.Errorf("Invalid move from %c%c to %c%c!",
-			from.file+fileUnicodeOffset,
-			from.row+rowUnicodeOffset,
-			to.file+fileUnicodeOffset,
-			to.row+rowUnicodeOffset)
+		return fmt.Errorf("Invalid move from %v to %v!", from, to)
 	}
 
 	board[to.file][to.row] = board[from.file][from.row]
@@ -183,11 +179,7 @@ func (position *position) move(from, to square) error {
 	if isChecked {
 		board[from.file][from.row] = board[to.file][to.row]
 		board[to.file][to.row] = empty
-		return fmt.Errorf("Invalid move from %c%c to %c%c, king is left in check!",
-			from.file+fileUnicodeOffset,
-			from.row+rowUnicodeOffset,
-			to.file+fileUnicodeOffset,
-			to.row+rowUnicodeOffset)
+		return fmt.Errorf("Invalid move from %v to %v, king is left in check!", from, to)
 	}
 
 	position.turn = !position.turn
@@ -259,7 +251,7 @@ func (board *board) validateMove(from, to square) bool {
 		}
 	case wpawn, bpawn:
 		if from.row == _1 || from.row == _8 {
-			panic(fmt.Sprintf("Impossible pawn position: %c%c", from.file+fileUnicodeOffset, from.row+rowUnicodeOffset))
+			panic(fmt.Sprintf("Impossible pawn position: %v", from))
 		}
 		var moveRow, startRow int
 		var opponent player
