@@ -436,6 +436,25 @@ func (position *position) generateValidMoves() (moves map[square][]square) {
 							}
 						}
 					}
+				case wbishop, bbishop:
+					from := square{file, row}
+					moves[from] = make([]square, 0)
+					for _, d := range diagonals {
+						for i := 1; i <= 7; i++ {
+							to := square{from.file + d.file*i, from.row + d.row*i}
+							if to.file < _a || _h < to.file || to.row < _1 || _8 < to.row {
+								break
+							}
+							if board[to.file][to.row] == empty {
+								moves[from] = append(moves[from], to)
+							} else if playerOf(board[to.file][to.row]) != player {
+								moves[from] = append(moves[from], to)
+								break
+							} else if playerOf(board[to.file][to.row]) == player {
+								break
+							}
+						}
+					}
 				}
 			}
 		}
