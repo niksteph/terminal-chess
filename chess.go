@@ -293,6 +293,9 @@ func (board *board) squareAttackedByPlayer(sq square, attacker player) bool {
 	}
 	for _, d := range orthogonals {
 		file, row := sq.file+d.file, sq.row+d.row
+		if file < _a || _h < file || row < _1 || _8 < row {
+			continue
+		}
 		piece := board[file][row]
 		if ((piece == wqueen || piece == wrook || piece == wking) && attacker == white) ||
 			((piece == bqueen || piece == brook || piece == bking) && attacker == black) {
@@ -302,19 +305,23 @@ func (board *board) squareAttackedByPlayer(sq square, attacker player) bool {
 		}
 		for i := 2; i <= 7; i++ {
 			file, row = sq.file+d.file*i, sq.row+d.row*i
-			if _a <= file && file <= _h && _1 <= row && row <= _8 {
-				piece = board[file][row]
-				if ((piece == wqueen || piece == wrook) && attacker == white) ||
-					((piece == bqueen || piece == brook) && attacker == black) {
-					return true
-				} else if piece != empty {
-					break
-				}
+			if file < _a || _h < file || row < _1 || _8 < row {
+				break
+			}
+			piece = board[file][row]
+			if ((piece == wqueen || piece == wrook) && attacker == white) ||
+				((piece == bqueen || piece == brook) && attacker == black) {
+				return true
+			} else if piece != empty {
+				break
 			}
 		}
 	}
 	for _, d := range diagonals {
 		file, row := sq.file+d.file, sq.row+d.row
+		if file < _a || _h < file || row < _1 || _8 < row {
+			continue
+		}
 		piece := board[file][row]
 		if ((piece == wqueen || piece == wbishop || piece == wking) && attacker == white) ||
 			((piece == bqueen || piece == bbishop || piece == bking) && attacker == black) {
@@ -324,14 +331,15 @@ func (board *board) squareAttackedByPlayer(sq square, attacker player) bool {
 		}
 		for i := 2; i <= 7; i++ {
 			file, row = sq.file+d.file*i, sq.row+d.row*i
-			if _a <= file && file <= _h && _1 <= row && row <= _8 {
-				piece = board[file][row]
-				if ((piece == wqueen || piece == wbishop) && attacker == white) ||
-					((piece == bqueen || piece == bbishop) && attacker == black) {
-					return true
-				} else if piece != empty {
-					break
-				}
+			if file < _a || _h < file || row < _1 || _8 < row {
+				break
+			}
+			piece = board[file][row]
+			if ((piece == wqueen || piece == wbishop) && attacker == white) ||
+				((piece == bqueen || piece == bbishop) && attacker == black) {
+				return true
+			} else if piece != empty {
+				break
 			}
 		}
 	}

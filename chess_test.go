@@ -845,6 +845,18 @@ func TestSquareAttackedByPlayerKnightBlack(t *testing.T) {
 	}
 }
 
+func TestSquareAttackedByPlayerBoundsCheck(t *testing.T) {
+	var board board
+	board.clear()
+	sq := square{_a, _1}
+	defer func() {
+		if r := recover(); r != nil {
+			t.Errorf("Should not panic but does.\nMessage: %v", r)
+		}
+	}()
+	board.squareAttackedByPlayer(sq, black)
+}
+
 func TestGenerateValidMovesKing(t *testing.T) {
 	var pos position
 	pos.board.clear()
