@@ -160,7 +160,10 @@ func (position *position) move(from, to square) error {
 	if board[from.file][from.row] == empty {
 		return fmt.Errorf("Square %v is empty!", from)
 	}
-	playerOfPiece := playerOf(board[from.file][from.row])
+	playerOfPiece, err := playerOf(board[from.file][from.row])
+	if err != nil {
+		return err
+	}
 	if position.turn != playerOfPiece {
 		return fmt.Errorf("Not %v's turn!", playerOfPiece)
 	}
@@ -187,7 +190,11 @@ func (position *position) move(from, to square) error {
 }
 
 func (board *board) validateMove(from, to square) bool {
-	if board[to.file][to.row] != empty && playerOf(board[from.file][from.row]) == playerOf(board[to.file][to.row]) {
+	fromPlayer, err := playerOf(board[from.file][from.row])
+	if err != nil {
+		panic(fmt.Sprintf("Error on square %v: %v", from, err))
+	}
+	if toPlayer, err := playerOf(board[to.file][to.row]); err == nil && fromPlayer == toPlayer {
 		return false
 	}
 	fileDiff := abs(to.file - from.file)
@@ -270,8 +277,8 @@ func (board *board) validateMove(from, to square) bool {
 			return false
 		} else if fileDiff == 0 && !(1 <= moveRow && ((from.row == startRow && moveRow <= 2) || moveRow == 1)) {
 			return false
-		} else if fileDiff == 1 &&
-			!(moveRow == 1 && board[to.file][to.row] != empty && playerOf(board[to.file][to.row]) == opponent) {
+		} else if toPlayer, err := playerOf(board[to.file][to.row]); fileDiff == 1 &&
+			!(moveRow == 1 && err == nil && toPlayer == opponent) {
 			return false
 		}
 	}
@@ -400,13 +407,15 @@ func (position *position) generateValidMoves() (moves map[square][]square) {
 	}
 	for file := range board {
 		for row, piece := range board[file] {
-			if piece != empty && playerOf(piece) == player {
+			if playerOfPiece, err := playerOf(piece); err == nil && playerOfPiece == player {
 				from := square{file, row}
 				switch piece {
 				case wking, bking:
 					for _, d := range orthogonals {
 						to := square{from.file + d.file, from.row + d.row}
-						if (board[to.file][to.row] == empty || playerOf(board[to.file][to.row]) != player) && !board.squareAttackedByPlayer(to, !player) {
+						if playerOfPiece, _ := playerOf(board[to.file][to.row]); (board[to.file][to.row] == empty ||
+							playerOfPiece != player) &&
+							!board.squareAttackedByPlayer(to, !player) {
 							_, ok := moves[from]
 							if !ok {
 								moves[from] = []square{to}
@@ -417,7 +426,9 @@ func (position *position) generateValidMoves() (moves map[square][]square) {
 					}
 					for _, d := range diagonals {
 						to := square{from.file + d.file, from.row + d.row}
-						if (board[to.file][to.row] == empty || playerOf(board[to.file][to.row]) != player) && !board.squareAttackedByPlayer(to, !player) {
+						if playerOfPiece, _ := playerOf(board[to.file][to.row]); (board[to.file][to.row] == empty ||
+							playerOfPiece != player) &&
+							!board.squareAttackedByPlayer(to, !player) {
 							_, ok := moves[from]
 							if !ok {
 								moves[from] = []square{to}
@@ -440,7 +451,7 @@ func (position *position) generateValidMoves() (moves map[square][]square) {
 								} else {
 									moves[from] = append(moves[from], to)
 								}
-							} else if playerOf(board[to.file][to.row]) != player {
+							} else if playerOfPiece, _ := playerOf(board[to.file][to.row]); playerOfPiece != player {
 								_, ok := moves[from]
 								if !ok {
 									moves[from] = []square{to}
@@ -448,7 +459,7 @@ func (position *position) generateValidMoves() (moves map[square][]square) {
 									moves[from] = append(moves[from], to)
 								}
 								break
-							} else if playerOf(board[to.file][to.row]) == player {
+							} else {
 								break
 							}
 						}
@@ -467,7 +478,7 @@ func (position *position) generateValidMoves() (moves map[square][]square) {
 								} else {
 									moves[from] = append(moves[from], to)
 								}
-							} else if playerOf(board[to.file][to.row]) != player {
+							} else if playerOfPiece, _ := playerOf(board[to.file][to.row]); playerOfPiece != player {
 								_, ok := moves[from]
 								if !ok {
 									moves[from] = []square{to}
@@ -475,7 +486,7 @@ func (position *position) generateValidMoves() (moves map[square][]square) {
 									moves[from] = append(moves[from], to)
 								}
 								break
-							} else if playerOf(board[to.file][to.row]) == player {
+							} else {
 								break
 							}
 						}
@@ -494,11 +505,15 @@ func abs(n int) int {
 	return n
 }
 
-func playerOf(piece piece) player {
+func playerOf(piece piece) (player, error) {
+	if piece == empty {
+		return white, fmt.Errorf("Not an actual piece but an empty square.")
+	}
 	if wking <= piece && piece <= wpawn {
-		return white
-	} else if bking <= piece && piece <= bpawn {
-		return black
+		return white, nil
+	}
+	if bking <= piece && piece <= bpawn {
+		return black, nil
 	}
 	panic(fmt.Sprintf("Not an actual piece: %d (0x%x)", piece, piece))
 }
