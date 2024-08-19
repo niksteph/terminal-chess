@@ -890,10 +890,11 @@ func TestGenerateValidMovesKingNoMoves(t *testing.T) {
 	pos.board[_d][_1] = brook
 	pos.board[_f][_4] = bpawn
 	pos.turn = white
-	want := map[square][]square{{_e, _4}: {}}
 	got := pos.generateValidMoves()
-	if !maps.EqualFunc(want, got, equivalent) {
-		t.Errorf("Generated moves are wrong. Want %v but got %v.", want, got)
+	from := square{_e, _4}
+	_, exists := got[from]
+	if exists {
+		t.Errorf("Generated moves are wrong. Key for %v should not exist. Value: %v", from, got[from])
 	}
 }
 
@@ -988,7 +989,6 @@ func TestGenerateValidMovesBishopObstructed(t *testing.T) {
 	pos.board[_c][_6] = brook
 	pos.turn = white
 	want := map[square][]square{
-		{_h, _1}: {},
 		{_g, _2}: {
 			{_f, _1},
 			{_c, _6},
