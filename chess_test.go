@@ -1004,6 +1004,87 @@ func TestGenerateValidMovesBishopObstructed(t *testing.T) {
 	}
 }
 
+func TestGenerateValidMovesQueen(t *testing.T) {
+	var pos position
+	pos.board.clear()
+	pos.board[_e][_4] = wqueen
+	pos.turn = white
+	want := map[square][]square{
+		{_e, _4}: {
+			{_e, _1},
+			{_e, _2},
+			{_e, _3},
+			{_e, _5},
+			{_e, _6},
+			{_e, _7},
+			{_e, _8},
+			{_a, _4},
+			{_b, _4},
+			{_c, _4},
+			{_d, _4},
+			{_f, _4},
+			{_g, _4},
+			{_h, _4},
+			{_b, _1},
+			{_c, _2},
+			{_d, _3},
+			{_a, _8},
+			{_b, _7},
+			{_c, _6},
+			{_d, _5},
+			{_f, _5},
+			{_g, _6},
+			{_h, _7},
+			{_f, _3},
+			{_g, _2},
+			{_h, _1},
+		},
+	}
+	got := pos.generateValidMoves()
+	if !maps.EqualFunc(want, got, equivalent) {
+		t.Errorf("Generated moves are wrong. Want %v but got %v.", want, got)
+	}
+}
+
+func TestGenerateValidMovesQueenObstructed(t *testing.T) {
+	var pos position
+	pos.board.clear()
+	pos.board[_e][_4] = wqueen
+	pos.board[_e][_3] = wpawn
+	pos.board[_c][_4] = brook
+	pos.board[_g][_6] = bbishop
+	pos.turn = white
+	want := map[square][]square{
+		{_e, _4}: {
+			{_e, _5},
+			{_e, _6},
+			{_e, _7},
+			{_e, _8},
+			{_c, _4},
+			{_d, _4},
+			{_f, _4},
+			{_g, _4},
+			{_h, _4},
+			{_b, _1},
+			{_c, _2},
+			{_d, _3},
+			{_a, _8},
+			{_b, _7},
+			{_c, _6},
+			{_d, _5},
+			{_f, _5},
+			{_g, _6},
+			{_f, _3},
+			{_g, _2},
+			{_h, _1},
+		},
+	}
+	got := pos.generateValidMoves()
+	if !maps.EqualFunc(want, got, equivalent) {
+		t.Errorf("Generated moves are wrong. Want %v but got %v.", want, got)
+	}
+}
+
 func TestParseMoveOk(t *testing.T) {
 	move := "e2-a5"
 	gotFrom, gotTo, err := parseMove(move)

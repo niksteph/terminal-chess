@@ -409,8 +409,7 @@ func (position *position) generateValidMoves() (moves map[square][]square) {
 		for row, piece := range board[file] {
 			if playerOfPiece, err := playerOf(piece); err == nil && playerOfPiece == player {
 				from := square{file, row}
-				switch piece {
-				case wking, bking:
+				if piece == wking || piece == bking {
 					for _, d := range orthogonals {
 						to := square{from.file + d.file, from.row + d.row}
 						if playerOfPiece, _ := playerOf(board[to.file][to.row]); (board[to.file][to.row] == empty ||
@@ -437,7 +436,8 @@ func (position *position) generateValidMoves() (moves map[square][]square) {
 							}
 						}
 					}
-				case wrook, brook:
+				}
+				if piece == wrook || piece == brook || piece == wqueen || piece == bqueen {
 					for _, d := range orthogonals {
 						for i := 1; i <= 7; i++ {
 							to := square{from.file + d.file*i, from.row + d.row*i}
@@ -464,7 +464,8 @@ func (position *position) generateValidMoves() (moves map[square][]square) {
 							}
 						}
 					}
-				case wbishop, bbishop:
+				}
+				if piece == wbishop || piece == bbishop || piece == wqueen || piece == bqueen {
 					for _, d := range diagonals {
 						for i := 1; i <= 7; i++ {
 							to := square{from.file + d.file*i, from.row + d.row*i}
