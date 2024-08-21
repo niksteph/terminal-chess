@@ -270,8 +270,6 @@ func (board *board) validateMove(from, to square) bool {
 			moveRow = from.row - to.row
 			startRow = _7
 			opponent = white
-		} else {
-			panic(fmt.Sprintf("Not a pawn: %d (0x%x)", piece, piece))
 		}
 		if fileDiff > 1 {
 			return false
@@ -516,6 +514,50 @@ func (position *position) generateValidMoves() (moves map[square][]square) {
 						tmp := movFile
 						movFile = movRow
 						movRow = tmp
+					}
+				}
+				if piece == wpawn || piece == bpawn {
+					if from.row == _1 || from.row == _8 {
+						panic(fmt.Sprintf("Impossible pawn position: %v", from))
+					}
+					var dir, startRow int
+					if piece == wpawn {
+						dir = 1
+						startRow = _2
+					} else if piece == bpawn {
+						dir = -1
+						startRow = _7
+					}
+					to := square{from.file, from.row + dir}
+					if board[to.file][to.row] == empty {
+						_, ok := moves[from]
+						if !ok {
+							moves[from] = []square{to}
+						} else {
+							moves[from] = append(moves[from], to)
+						}
+						to = square{to.file, to.row + dir}
+						if board[to.file][to.row] == empty && from.row == startRow {
+							moves[from] = append(moves[from], to)
+						}
+					}
+					to = square{from.file + 1, from.row + dir}
+					if playerOfPiece, err := playerOf(board[to.file][to.row]); err == nil && playerOfPiece != position.turn {
+						_, ok := moves[from]
+						if !ok {
+							moves[from] = []square{to}
+						} else {
+							moves[from] = append(moves[from], to)
+						}
+					}
+					to = square{from.file - 1, from.row + dir}
+					if playerOfPiece, err := playerOf(board[to.file][to.row]); err == nil && playerOfPiece != position.turn {
+						_, ok := moves[from]
+						if !ok {
+							moves[from] = []square{to}
+						} else {
+							moves[from] = append(moves[from], to)
+						}
 					}
 				}
 			}

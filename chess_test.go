@@ -1133,6 +1133,102 @@ func TestGenerateValidMovesKnightObstructed(t *testing.T) {
 	}
 }
 
+func TestGenerateValidMovesPawnWhite(t *testing.T) {
+	var pos position
+	pos.board.clear()
+	pos.board[_e][_2] = wpawn
+	pos.board[_d][_3] = bpawn
+	pos.turn = white
+	want := map[square][]square{
+		{_e, _2}: {
+			{_d, _3},
+			{_e, _3},
+			{_e, _4},
+		},
+	}
+	got := pos.generateValidMoves()
+	if !maps.EqualFunc(want, got, equivalent) {
+		t.Errorf("Generated moves are wrong. Want %v but got %v.", want, got)
+	}
+}
+
+func TestGenerateValidMovesPawnWhiteNonStart(t *testing.T) {
+	var pos position
+	pos.board.clear()
+	pos.board[_e][_3] = wpawn
+	pos.turn = white
+	want := map[square][]square{
+		{_e, _3}: {
+			{_e, _4},
+		},
+	}
+	got := pos.generateValidMoves()
+	if !maps.EqualFunc(want, got, equivalent) {
+		t.Errorf("Generated moves are wrong. Want %v but got %v.", want, got)
+	}
+}
+
+func TestGenerateValidMovesPawnWhiteObstructed(t *testing.T) {
+	var pos position
+	pos.board.clear()
+	pos.board[_e][_2] = wpawn
+	pos.board[_e][_3] = bpawn
+	pos.turn = white
+	want := map[square][]square{}
+	got := pos.generateValidMoves()
+	if !maps.EqualFunc(want, got, equivalent) {
+		t.Errorf("Generated moves are wrong. Want %v but got %v.", want, got)
+	}
+}
+
+func TestGenerateValidMovesPawnBlack(t *testing.T) {
+	var pos position
+	pos.board.clear()
+	pos.board[_e][_7] = bpawn
+	pos.board[_d][_6] = wpawn
+	pos.turn = black
+	want := map[square][]square{
+		{_e, _7}: {
+			{_d, _6},
+			{_e, _6},
+			{_e, _5},
+		},
+	}
+	got := pos.generateValidMoves()
+	if !maps.EqualFunc(want, got, equivalent) {
+		t.Errorf("Generated moves are wrong. Want %v but got %v.", want, got)
+	}
+}
+
+func TestGenerateValidMovesPawnBlackNonStart(t *testing.T) {
+	var pos position
+	pos.board.clear()
+	pos.board[_e][_6] = bpawn
+	pos.turn = black
+	want := map[square][]square{
+		{_e, _6}: {
+			{_e, _5},
+		},
+	}
+	got := pos.generateValidMoves()
+	if !maps.EqualFunc(want, got, equivalent) {
+		t.Errorf("Generated moves are wrong. Want %v but got %v.", want, got)
+	}
+}
+
+func TestGenerateValidMovesPawnBlackObstructed(t *testing.T) {
+	var pos position
+	pos.board.clear()
+	pos.board[_e][_7] = bpawn
+	pos.board[_e][_6] = wpawn
+	pos.turn = black
+	want := map[square][]square{}
+	got := pos.generateValidMoves()
+	if !maps.EqualFunc(want, got, equivalent) {
+		t.Errorf("Generated moves are wrong. Want %v but got %v.", want, got)
+	}
+}
+
 func TestParseMoveOk(t *testing.T) {
 	move := "e2-a5"
 	gotFrom, gotTo, err := parseMove(move)
