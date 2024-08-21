@@ -493,6 +493,31 @@ func (position *position) generateValidMoves() (moves map[square][]square) {
 						}
 					}
 				}
+				if piece == wknight || piece == bknight {
+					movFile := 1
+					movRow := 2
+					for i := 0; i < 2; i++ {
+						for j := 0; j < 4; j++ {
+							to := square{from.file + movFile, from.row + movRow}
+							if playerOfPiece, err := playerOf(board[to.file][to.row]); _a <= file && file <= _h &&
+								_1 <= row && row <= _8 &&
+								(err != nil || playerOfPiece != player) {
+								_, ok := moves[from]
+								if !ok {
+									moves[from] = []square{to}
+								} else {
+									moves[from] = append(moves[from], to)
+								}
+							}
+							tmp := -movFile
+							movFile = movRow
+							movRow = tmp
+						}
+						tmp := movFile
+						movFile = movRow
+						movRow = tmp
+					}
+				}
 			}
 		}
 	}

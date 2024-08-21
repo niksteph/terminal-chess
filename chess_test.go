@@ -1085,6 +1085,54 @@ func TestGenerateValidMovesQueenObstructed(t *testing.T) {
 	}
 }
 
+func TestGenerateValidMovesKnight(t *testing.T) {
+	var pos position
+	pos.board.clear()
+	pos.board[_e][_4] = wknight
+	pos.turn = white
+	want := map[square][]square{
+		{_e, _4}: {
+			{_d, _2},
+			{_f, _2},
+			{_c, _3},
+			{_g, _3},
+			{_c, _5},
+			{_g, _5},
+			{_d, _6},
+			{_f, _6},
+		},
+	}
+	got := pos.generateValidMoves()
+	if !maps.EqualFunc(want, got, equivalent) {
+		t.Errorf("Generated moves are wrong. Want %v but got %v.", want, got)
+	}
+}
+
+func TestGenerateValidMovesKnightObstructed(t *testing.T) {
+	var pos position
+	pos.board.clear()
+	pos.board[_e][_4] = wknight
+	pos.board[_d][_2] = brook
+	pos.board[_g][_3] = wpawn
+	pos.board[_g][_4] = bbishop
+	pos.turn = white
+	want := map[square][]square{
+		{_e, _4}: {
+			{_d, _2},
+			{_f, _2},
+			{_c, _3},
+			{_c, _5},
+			{_g, _5},
+			{_d, _6},
+			{_f, _6},
+		},
+	}
+	got := pos.generateValidMoves()
+	if !maps.EqualFunc(want, got, equivalent) {
+		t.Errorf("Generated moves are wrong. Want %v but got %v.", want, got)
+	}
+}
+
 func TestParseMoveOk(t *testing.T) {
 	move := "e2-a5"
 	gotFrom, gotTo, err := parseMove(move)
