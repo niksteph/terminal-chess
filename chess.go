@@ -410,6 +410,9 @@ func (position *position) generateValidMoves() (moves map[square][]square) {
 				if piece == wking || piece == bking {
 					for _, d := range orthogonals {
 						to := square{from.file + d.file, from.row + d.row}
+						if !withinBounds(to) {
+							continue
+						}
 						isCheckedAfter, _ := board.kingIsCheckedAfter(from, to)
 						if playerOfPiece, _ := playerOf(board[to.file][to.row]); (board[to.file][to.row] == empty ||
 							playerOfPiece != player) &&
@@ -425,6 +428,9 @@ func (position *position) generateValidMoves() (moves map[square][]square) {
 					}
 					for _, d := range diagonals {
 						to := square{from.file + d.file, from.row + d.row}
+						if !withinBounds(to) {
+							continue
+						}
 						isCheckedAfter, _ := board.kingIsCheckedAfter(from, to)
 						if playerOfPiece, _ := playerOf(board[to.file][to.row]); (board[to.file][to.row] == empty ||
 							playerOfPiece != player) &&
@@ -442,7 +448,7 @@ func (position *position) generateValidMoves() (moves map[square][]square) {
 					for _, d := range orthogonals {
 						for i := 1; i <= 7; i++ {
 							to := square{from.file + d.file*i, from.row + d.row*i}
-							if to.file < _a || _h < to.file || to.row < _1 || _8 < to.row {
+							if !withinBounds(to) {
 								break
 							}
 							if board[to.file][to.row] == empty {
@@ -470,7 +476,7 @@ func (position *position) generateValidMoves() (moves map[square][]square) {
 					for _, d := range diagonals {
 						for i := 1; i <= 7; i++ {
 							to := square{from.file + d.file*i, from.row + d.row*i}
-							if to.file < _a || _h < to.file || to.row < _1 || _8 < to.row {
+							if !withinBounds(to) {
 								break
 							}
 							if board[to.file][to.row] == empty {
@@ -500,9 +506,13 @@ func (position *position) generateValidMoves() (moves map[square][]square) {
 					for i := 0; i < 2; i++ {
 						for j := 0; j < 4; j++ {
 							to := square{from.file + movFile, from.row + movRow}
-							if playerOfPiece, err := playerOf(board[to.file][to.row]); _a <= file && file <= _h &&
-								_1 <= row && row <= _8 &&
-								(err != nil || playerOfPiece != player) {
+							if !withinBounds(to) {
+								tmp := -movFile
+								movFile = movRow
+								movRow = tmp
+								continue
+							}
+							if playerOfPiece, err := playerOf(board[to.file][to.row]); err != nil || playerOfPiece != player {
 								_, ok := moves[from]
 								if !ok {
 									moves[from] = []square{to}
@@ -545,21 +555,25 @@ func (position *position) generateValidMoves() (moves map[square][]square) {
 						}
 					}
 					to = square{from.file + 1, from.row + dir}
-					if playerOfPiece, err := playerOf(board[to.file][to.row]); err == nil && playerOfPiece != position.turn {
-						_, ok := moves[from]
-						if !ok {
-							moves[from] = []square{to}
-						} else {
-							moves[from] = append(moves[from], to)
+					if to.file <= _h {
+						if playerOfPiece, err := playerOf(board[to.file][to.row]); err == nil && playerOfPiece != position.turn {
+							_, ok := moves[from]
+							if !ok {
+								moves[from] = []square{to}
+							} else {
+								moves[from] = append(moves[from], to)
+							}
 						}
 					}
 					to = square{from.file - 1, from.row + dir}
-					if playerOfPiece, err := playerOf(board[to.file][to.row]); err == nil && playerOfPiece != position.turn {
-						_, ok := moves[from]
-						if !ok {
-							moves[from] = []square{to}
-						} else {
-							moves[from] = append(moves[from], to)
+					if _a <= to.file {
+						if playerOfPiece, err := playerOf(board[to.file][to.row]); err == nil && playerOfPiece != position.turn {
+							_, ok := moves[from]
+							if !ok {
+								moves[from] = []square{to}
+							} else {
+								moves[from] = append(moves[from], to)
+							}
 						}
 					}
 				}
@@ -586,6 +600,10 @@ func (board *board) kingIsCheckedAfter(from, to square) (bool, error) {
 	board[from.file][from.row] = board[to.file][to.row]
 	board[to.file][to.row] = tmpPiece
 	return isChecked, nil
+}
+
+func withinBounds(sq square) bool {
+	return _a <= sq.file && sq.file <= _h && _1 <= sq.row && sq.row <= _8
 }
 
 func abs(n int) int {
