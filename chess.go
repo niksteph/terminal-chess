@@ -168,20 +168,6 @@ func (position *position) move(from, to square) error {
 		return fmt.Errorf("Invalid move from %v to %v!", from, to)
 	}
 
-	board[to.file][to.row] = board[from.file][from.row]
-	board[from.file][from.row] = empty
-
-	kingPos, err := board.findKingOf(position.turn)
-	if err != nil {
-		panic(err)
-	}
-	isChecked := board.squareAttackedByPlayer(kingPos, !position.turn)
-	if isChecked {
-		board[from.file][from.row] = board[to.file][to.row]
-		board[to.file][to.row] = empty
-		return fmt.Errorf("Invalid move from %v to %v, king is left in check!", from, to)
-	}
-
 	position.turn = !position.turn
 	return nil
 }
@@ -448,14 +434,16 @@ func (position *position) generateValidMoves() (moves map[square][]square) {
 							if !withinBounds(to) {
 								break
 							}
-							if board[to.file][to.row] == empty {
+							isCheckedAfter, _ := board.kingIsCheckedAfter(from, to)
+							owner, isEmpty := playerOf(board[to.file][to.row])
+							if isEmpty && !isCheckedAfter {
 								_, ok := moves[from]
 								if !ok {
 									moves[from] = []square{to}
 								} else {
 									moves[from] = append(moves[from], to)
 								}
-							} else if owner, _ := playerOf(board[to.file][to.row]); owner != player {
+							} else if !isEmpty && owner != player && !isCheckedAfter {
 								_, ok := moves[from]
 								if !ok {
 									moves[from] = []square{to}
@@ -463,7 +451,7 @@ func (position *position) generateValidMoves() (moves map[square][]square) {
 									moves[from] = append(moves[from], to)
 								}
 								break
-							} else {
+							} else if !isEmpty && owner == player {
 								break
 							}
 						}
@@ -476,14 +464,16 @@ func (position *position) generateValidMoves() (moves map[square][]square) {
 							if !withinBounds(to) {
 								break
 							}
-							if board[to.file][to.row] == empty {
+							isCheckedAfter, _ := board.kingIsCheckedAfter(from, to)
+							owner, isEmpty := playerOf(board[to.file][to.row])
+							if isEmpty && !isCheckedAfter {
 								_, ok := moves[from]
 								if !ok {
 									moves[from] = []square{to}
 								} else {
 									moves[from] = append(moves[from], to)
 								}
-							} else if owner, _ := playerOf(board[to.file][to.row]); owner != player {
+							} else if !isEmpty && owner != player && !isCheckedAfter {
 								_, ok := moves[from]
 								if !ok {
 									moves[from] = []square{to}
@@ -491,7 +481,7 @@ func (position *position) generateValidMoves() (moves map[square][]square) {
 									moves[from] = append(moves[from], to)
 								}
 								break
-							} else {
+							} else if !isEmpty && owner == player {
 								break
 							}
 						}
@@ -509,7 +499,9 @@ func (position *position) generateValidMoves() (moves map[square][]square) {
 								movRow = tmp
 								continue
 							}
-							if owner, isEmpty := playerOf(board[to.file][to.row]); isEmpty || owner != player {
+							isCheckedAfter, _ := board.kingIsCheckedAfter(from, to)
+							if owner, isEmpty := playerOf(board[to.file][to.row]); (isEmpty ||
+								owner != player) && !isCheckedAfter {
 								_, ok := moves[from]
 								if !ok {
 									moves[from] = []square{to}
@@ -539,7 +531,8 @@ func (position *position) generateValidMoves() (moves map[square][]square) {
 						startRow = _7
 					}
 					to := square{from.file, from.row + dir}
-					if board[to.file][to.row] == empty {
+					isCheckedAfter, _ := board.kingIsCheckedAfter(from, to)
+					if board[to.file][to.row] == empty && !isCheckedAfter {
 						_, ok := moves[from]
 						if !ok {
 							moves[from] = []square{to}
@@ -547,13 +540,16 @@ func (position *position) generateValidMoves() (moves map[square][]square) {
 							moves[from] = append(moves[from], to)
 						}
 						to = square{to.file, to.row + dir}
-						if board[to.file][to.row] == empty && from.row == startRow {
+						isCheckedAfter, _ = board.kingIsCheckedAfter(from, to)
+						if board[to.file][to.row] == empty && from.row == startRow && !isCheckedAfter {
 							moves[from] = append(moves[from], to)
 						}
 					}
 					to = square{from.file + 1, from.row + dir}
+					isCheckedAfter, _ = board.kingIsCheckedAfter(from, to)
 					if to.file <= _h {
-						if owner, isEmpty := playerOf(board[to.file][to.row]); !isEmpty && owner != position.turn {
+						if owner, isEmpty := playerOf(board[to.file][to.row]); !isEmpty &&
+							owner != position.turn && !isCheckedAfter {
 							_, ok := moves[from]
 							if !ok {
 								moves[from] = []square{to}
@@ -563,8 +559,10 @@ func (position *position) generateValidMoves() (moves map[square][]square) {
 						}
 					}
 					to = square{from.file - 1, from.row + dir}
+					isCheckedAfter, _ = board.kingIsCheckedAfter(from, to)
 					if _a <= to.file {
-						if owner, isEmpty := playerOf(board[to.file][to.row]); !isEmpty && owner != position.turn {
+						if owner, isEmpty := playerOf(board[to.file][to.row]); !isEmpty &&
+							owner != position.turn && !isCheckedAfter {
 							_, ok := moves[from]
 							if !ok {
 								moves[from] = []square{to}
@@ -583,17 +581,25 @@ func (position *position) generateValidMoves() (moves map[square][]square) {
 func (board *board) kingIsCheckedAfter(from, to square) (bool, error) {
 	player, isEmpty := playerOf(board[from.file][from.row])
 	if isEmpty {
-		return true, fmt.Errorf("Square %v is empty.", from)
+		return false, fmt.Errorf("Square %v is empty.", from)
+	}
+
+	var kingPos square
+	if board[from.file][from.row] == wking || board[from.file][from.row] == bking {
+		kingPos = to
+	} else {
+		var err error
+		kingPos, err = board.findKingOf(player)
+		if err != nil {
+			return false, err
+		}
 	}
 	tmpPiece := board[to.file][to.row]
 	board[to.file][to.row] = board[from.file][from.row]
 	board[from.file][from.row] = empty
 
-	kingPos, err := board.findKingOf(player)
-	if err != nil {
-		panic(err)
-	}
 	isChecked := board.squareAttackedByPlayer(kingPos, !player)
+
 	board[from.file][from.row] = board[to.file][to.row]
 	board[to.file][to.row] = tmpPiece
 	return isChecked, nil

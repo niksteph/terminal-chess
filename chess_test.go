@@ -1296,19 +1296,55 @@ func TestGenerateValidMovesPawnBlackEdge(t *testing.T) {
 	}
 }
 
-func TestGenerateValidMovesChecked(t *testing.T) {
+func TestGenerateValidMovesCheckedMoveAway(t *testing.T) {
 	var pos position
 	pos.board.clear()
 	pos.board[_e][_4] = wking
-	pos.board[_e][_5] = brook
+	pos.board[_e][_6] = brook
 	pos.turn = white
 	want := map[square][]square{
 		{_e, _4}: {
 			{_d, _3},
 			{_d, _4},
-			{_e, _5},
+			{_d, _5},
 			{_f, _3},
 			{_f, _4},
+			{_f, _5},
+		},
+	}
+	got := pos.generateValidMoves()
+	if !maps.EqualFunc(want, got, equivalent) {
+		t.Errorf("Generated moves are wrong. Want %v but got %v.", want, got)
+	}
+}
+
+func TestGenerateValidMovesCheckedTake(t *testing.T) {
+	var pos position
+	pos.board.clear()
+	pos.board[_e][_4] = wking
+	pos.board[_h][_8] = bking
+	pos.board[_e][_5] = brook
+	pos.board[_c][_5] = wrook
+	pos.board[_d][_4] = wbishop
+	pos.board[_f][_4] = wpawn
+	pos.board[_d][_3] = wpawn
+	pos.board[_f][_3] = wknight
+	pos.turn = white
+	want := map[square][]square{
+		{_e, _4}: {
+			{_e, _5},
+		},
+		{_c, _5}: {
+			{_e, _5},
+		},
+		{_d, _4}: {
+			{_e, _5},
+		},
+		{_f, _4}: {
+			{_e, _5},
+		},
+		{_f, _3}: {
+			{_e, _5},
 		},
 	}
 	got := pos.generateValidMoves()
