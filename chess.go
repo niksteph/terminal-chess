@@ -157,12 +157,9 @@ func (position *position) move(from, to square) error {
 		return fmt.Errorf("Target square is same as origin square.")
 	}
 	var board *board = &(position.board)
-	if board[from.file][from.row] == empty {
+	playerOfPiece, isEmpty := playerOf(board[from.file][from.row])
+	if isEmpty {
 		return fmt.Errorf("Square %v is empty!", from)
-	}
-	playerOfPiece, err := playerOf(board[from.file][from.row])
-	if err != nil {
-		return err
 	}
 	if position.turn != playerOfPiece {
 		return fmt.Errorf("Not %v's turn!", playerOfPiece)
@@ -190,11 +187,11 @@ func (position *position) move(from, to square) error {
 }
 
 func (board *board) validateMove(from, to square) bool {
-	fromPlayer, err := playerOf(board[from.file][from.row])
-	if err != nil {
-		panic(fmt.Sprintf("Error on square %v: %v", from, err))
+	fromPlayer, isEmpty := playerOf(board[from.file][from.row])
+	if isEmpty {
+		return false
 	}
-	if toPlayer, err := playerOf(board[to.file][to.row]); err == nil && fromPlayer == toPlayer {
+	if toPlayer, isEmpty := playerOf(board[to.file][to.row]); !isEmpty && fromPlayer == toPlayer {
 		return false
 	}
 	fileDiff := abs(to.file - from.file)
@@ -275,8 +272,8 @@ func (board *board) validateMove(from, to square) bool {
 			return false
 		} else if fileDiff == 0 && !(1 <= moveRow && ((from.row == startRow && moveRow <= 2) || moveRow == 1)) {
 			return false
-		} else if toPlayer, err := playerOf(board[to.file][to.row]); fileDiff == 1 &&
-			!(moveRow == 1 && err == nil && toPlayer == opponent) {
+		} else if toPlayer, isEmpty := playerOf(board[to.file][to.row]); fileDiff == 1 &&
+			!(moveRow == 1 && !isEmpty && toPlayer == opponent) {
 			return false
 		}
 	}
@@ -405,7 +402,7 @@ func (position *position) generateValidMoves() (moves map[square][]square) {
 	}
 	for file := range board {
 		for row, piece := range board[file] {
-			if playerOfPiece, err := playerOf(piece); err == nil && playerOfPiece == player {
+			if playerOfPiece, isEmpty := playerOf(piece); !isEmpty && playerOfPiece == player {
 				from := square{file, row}
 				if piece == wking || piece == bking {
 					for _, d := range orthogonals {
@@ -512,7 +509,7 @@ func (position *position) generateValidMoves() (moves map[square][]square) {
 								movRow = tmp
 								continue
 							}
-							if playerOfPiece, err := playerOf(board[to.file][to.row]); err != nil || playerOfPiece != player {
+							if playerOfPiece, isEmpty := playerOf(board[to.file][to.row]); isEmpty || playerOfPiece != player {
 								_, ok := moves[from]
 								if !ok {
 									moves[from] = []square{to}
@@ -556,7 +553,7 @@ func (position *position) generateValidMoves() (moves map[square][]square) {
 					}
 					to = square{from.file + 1, from.row + dir}
 					if to.file <= _h {
-						if playerOfPiece, err := playerOf(board[to.file][to.row]); err == nil && playerOfPiece != position.turn {
+						if playerOfPiece, isEmpty := playerOf(board[to.file][to.row]); !isEmpty && playerOfPiece != position.turn {
 							_, ok := moves[from]
 							if !ok {
 								moves[from] = []square{to}
@@ -567,7 +564,7 @@ func (position *position) generateValidMoves() (moves map[square][]square) {
 					}
 					to = square{from.file - 1, from.row + dir}
 					if _a <= to.file {
-						if playerOfPiece, err := playerOf(board[to.file][to.row]); err == nil && playerOfPiece != position.turn {
+						if playerOfPiece, isEmpty := playerOf(board[to.file][to.row]); !isEmpty && playerOfPiece != position.turn {
 							_, ok := moves[from]
 							if !ok {
 								moves[from] = []square{to}
@@ -584,9 +581,9 @@ func (position *position) generateValidMoves() (moves map[square][]square) {
 }
 
 func (board *board) kingIsCheckedAfter(from, to square) (bool, error) {
-	player, err := playerOf(board[from.file][from.row])
-	if err != nil {
-		return true, err
+	player, isEmpty := playerOf(board[from.file][from.row])
+	if isEmpty {
+		return true, fmt.Errorf("Square %v is empty.", from)
 	}
 	tmpPiece := board[to.file][to.row]
 	board[to.file][to.row] = board[from.file][from.row]
@@ -613,15 +610,15 @@ func abs(n int) int {
 	return n
 }
 
-func playerOf(piece piece) (player, error) {
+func playerOf(piece piece) (player, bool) {
 	if piece == empty {
-		return white, fmt.Errorf("Not an actual piece but an empty square.")
+		return white, true
 	}
 	if wking <= piece && piece <= wpawn {
-		return white, nil
+		return white, false
 	}
 	if bking <= piece && piece <= bpawn {
-		return black, nil
+		return black, false
 	}
 	panic(fmt.Sprintf("Not an actual piece: %d (0x%x)", piece, piece))
 }
