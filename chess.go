@@ -157,12 +157,12 @@ func (position *position) move(from, to square) error {
 		return fmt.Errorf("Target square is same as origin square.")
 	}
 	var board *board = &(position.board)
-	playerOfPiece, isEmpty := playerOf(board[from.file][from.row])
+	owner, isEmpty := playerOf(board[from.file][from.row])
 	if isEmpty {
 		return fmt.Errorf("Square %v is empty!", from)
 	}
-	if position.turn != playerOfPiece {
-		return fmt.Errorf("Not %v's turn!", playerOfPiece)
+	if position.turn != owner {
+		return fmt.Errorf("Not %v's turn!", owner)
 	}
 	if !board.validateMove(from, to) {
 		return fmt.Errorf("Invalid move from %v to %v!", from, to)
@@ -402,7 +402,7 @@ func (position *position) generateValidMoves() (moves map[square][]square) {
 	}
 	for file := range board {
 		for row, piece := range board[file] {
-			if playerOfPiece, isEmpty := playerOf(piece); !isEmpty && playerOfPiece == player {
+			if owner, isEmpty := playerOf(piece); !isEmpty && owner == player {
 				from := square{file, row}
 				if piece == wking || piece == bking {
 					for _, d := range orthogonals {
@@ -411,8 +411,8 @@ func (position *position) generateValidMoves() (moves map[square][]square) {
 							continue
 						}
 						isCheckedAfter, _ := board.kingIsCheckedAfter(from, to)
-						if playerOfPiece, _ := playerOf(board[to.file][to.row]); (board[to.file][to.row] == empty ||
-							playerOfPiece != player) &&
+						if owner, _ := playerOf(board[to.file][to.row]); (board[to.file][to.row] == empty ||
+							owner != player) &&
 							!isCheckedAfter {
 
 							_, ok := moves[from]
@@ -429,8 +429,8 @@ func (position *position) generateValidMoves() (moves map[square][]square) {
 							continue
 						}
 						isCheckedAfter, _ := board.kingIsCheckedAfter(from, to)
-						if playerOfPiece, _ := playerOf(board[to.file][to.row]); (board[to.file][to.row] == empty ||
-							playerOfPiece != player) &&
+						if owner, _ := playerOf(board[to.file][to.row]); (board[to.file][to.row] == empty ||
+							owner != player) &&
 							!isCheckedAfter {
 							_, ok := moves[from]
 							if !ok {
@@ -455,7 +455,7 @@ func (position *position) generateValidMoves() (moves map[square][]square) {
 								} else {
 									moves[from] = append(moves[from], to)
 								}
-							} else if playerOfPiece, _ := playerOf(board[to.file][to.row]); playerOfPiece != player {
+							} else if owner, _ := playerOf(board[to.file][to.row]); owner != player {
 								_, ok := moves[from]
 								if !ok {
 									moves[from] = []square{to}
@@ -483,7 +483,7 @@ func (position *position) generateValidMoves() (moves map[square][]square) {
 								} else {
 									moves[from] = append(moves[from], to)
 								}
-							} else if playerOfPiece, _ := playerOf(board[to.file][to.row]); playerOfPiece != player {
+							} else if owner, _ := playerOf(board[to.file][to.row]); owner != player {
 								_, ok := moves[from]
 								if !ok {
 									moves[from] = []square{to}
@@ -509,7 +509,7 @@ func (position *position) generateValidMoves() (moves map[square][]square) {
 								movRow = tmp
 								continue
 							}
-							if playerOfPiece, isEmpty := playerOf(board[to.file][to.row]); isEmpty || playerOfPiece != player {
+							if owner, isEmpty := playerOf(board[to.file][to.row]); isEmpty || owner != player {
 								_, ok := moves[from]
 								if !ok {
 									moves[from] = []square{to}
@@ -553,7 +553,7 @@ func (position *position) generateValidMoves() (moves map[square][]square) {
 					}
 					to = square{from.file + 1, from.row + dir}
 					if to.file <= _h {
-						if playerOfPiece, isEmpty := playerOf(board[to.file][to.row]); !isEmpty && playerOfPiece != position.turn {
+						if owner, isEmpty := playerOf(board[to.file][to.row]); !isEmpty && owner != position.turn {
 							_, ok := moves[from]
 							if !ok {
 								moves[from] = []square{to}
@@ -564,7 +564,7 @@ func (position *position) generateValidMoves() (moves map[square][]square) {
 					}
 					to = square{from.file - 1, from.row + dir}
 					if _a <= to.file {
-						if playerOfPiece, isEmpty := playerOf(board[to.file][to.row]); !isEmpty && playerOfPiece != position.turn {
+						if owner, isEmpty := playerOf(board[to.file][to.row]); !isEmpty && owner != position.turn {
 							_, ok := moves[from]
 							if !ok {
 								moves[from] = []square{to}
